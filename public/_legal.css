@@ -1,0 +1,12 @@
+:root{--ground:#F4F6FA;--card:#FFFFFF;--ink:#13203A;--muted:#4D5B73;--line:#CFD6E3;--accent:#1F4FD1;--thumb:#FFC83D}
+@media (prefers-color-scheme: dark){:root{color-scheme:dark;--ground:#0E1422;--card:#172036;--ink:#EEF2FA;--muted:#A9B4C8;--line:#2C3957;--accent:#7FA2FF}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font:18px/1.6 "Atkinson Hyperlegible",Verdana,system-ui,sans-serif;padding:24px 16px 48px}
+main{max-width:720px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+h1{font-size:1.6rem;line-height:1.2;margin:0 0 8px}
+h2{font-size:1.15rem;margin:28px 0 8px}
+p,li{max-width:65ch}
+a{color:var(--accent)}
+.back{display:inline-block;margin-bottom:16px;font-weight:700}
+.todo{background:var(--thumb);color:#13203A;padding:0 4px;border-radius:3px}
+.small{color:var(--muted);font-size:.9rem}

@@ -1,0 +1,923 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Coup de pouce</title>
+<meta name="description" content="Une lettre qui t'inquiète ? Coup de pouce t'aide gratuitement à la comprendre, à simplifier un texte, à trouver tes droits et à préparer ta majorité à la sortie de l'ASE.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23FFE14D'/%3E%3Ctext x='16' y='22' font-size='17' text-anchor='middle' font-family='Georgia' font-weight='bold' fill='%231B2130'%3Ec%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{
+  --ground:#E9EDF2; --seyes:#D3DCE8; --seyes-bold:#BFCBDC; --margin:#E7A9AE;
+  --paper:#FFFFFF; --ink:#1B2130; --ink-soft:#4A5366; --rule:#D5DAE3;
+  --marker:#FFE14D; --marker-ink:#1B2130;
+  --red:#C23A2E; --red-bg:#FBE9E6; --green:#2B7A4B; --green-bg:#E4F3EA; --amber:#9A6200; --amber-bg:#FFF2CC;
+  --tab-1:#FFE14D; --tab-2:#9FD3EE; --tab-3:#A9DEC0; --tab-4:#F5B9C9; --tab-5:#CDBDF2;
+  --btn:#1B2130; --btn-ink:#FFFFFF;
+  --fs:18px;
+  --hand:"Caveat","Segoe Print","Bradley Hand",cursive;
+  --display:"Young Serif",Georgia,"Times New Roman",serif;
+  --body:"Atkinson Hyperlegible",Verdana,system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#11151D; --seyes:#1A202B; --seyes-bold:#212836; --margin:#5A2E35;
+    --paper:#1A2030; --ink:#ECEFF5; --ink-soft:#AEB6C7; --rule:#2D3548;
+    --marker:#E8CC3F; --marker-ink:#11151D;
+    --red:#FF8B7E; --red-bg:#3B1E1B; --green:#7ED6A2; --green-bg:#15301F; --amber:#FFCB62; --amber-bg:#352A10;
+    --tab-1:#C9AE2E; --tab-2:#4A87A6; --tab-3:#4E9270; --tab-4:#A5616F; --tab-5:#7C69A8;
+    --btn:#ECEFF5; --btn-ink:#11151D;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#11151D; --seyes:#1A202B; --seyes-bold:#212836; --margin:#5A2E35;
+  --paper:#1A2030; --ink:#ECEFF5; --ink-soft:#AEB6C7; --rule:#2D3548;
+  --marker:#E8CC3F; --marker-ink:#11151D;
+  --red:#FF8B7E; --red-bg:#3B1E1B; --green:#7ED6A2; --green-bg:#15301F; --amber:#FFCB62; --amber-bg:#352A10;
+  --tab-1:#C9AE2E; --tab-2:#4A87A6; --tab-3:#4E9270; --tab-4:#A5616F; --tab-5:#7C69A8;
+  --btn:#ECEFF5; --btn-ink:#11151D;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{font-size:var(--fs)}
+body{
+  margin:0;color:var(--ink);font-family:var(--body);font-size:1rem;line-height:1.6;
+  background-color:var(--ground);
+  /* cahier à grands carreaux Seyès */
+  background-image:
+    linear-gradient(var(--seyes-bold) 1px,transparent 1px),
+    linear-gradient(90deg,var(--seyes) 1px,transparent 1px);
+  background-size:32px 32px,32px 32px;
+  padding-inline:16px;padding-block:0 56px;
+}
+.wrap{max-width:820px;margin:0 auto}
+p{margin:0}
+h1,h2,h3{margin:0;text-wrap:balance}
+a{color:inherit}
+.mark{background:linear-gradient(transparent 12%,var(--marker) 12%,var(--marker) 88%,transparent 88%);color:var(--marker-ink);padding:0 .15em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.hand{font-family:var(--hand);font-weight:600;line-height:1.1}
+
+/* en-tête */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-block:18px 8px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.seal{width:44px;height:44px;border-radius:50%;background:var(--marker);display:grid;place-items:center;box-shadow:inset 0 0 0 3px var(--ink);transform:rotate(-8deg)}
+.seal span{font-family:var(--display);font-size:1.5rem;color:#1B2130;line-height:1;margin-top:-3px}
+.brand b{font-family:var(--display);font-weight:400;font-size:1.35rem;letter-spacing:-.01em}
+.sizes{display:flex;align-items:center;gap:4px;font-size:.85rem;color:var(--ink-soft)}
+.sizes button{font-family:var(--display);background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:8px;min-width:42px;min-height:42px;padding:0 8px;cursor:pointer;line-height:1}
+.sizes button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.sizes .s1{font-size:.85rem}.sizes .s2{font-size:1.05rem}.sizes .s3{font-size:1.3rem}
+
+/* accroche */
+.hero{padding-block:28px 26px;position:relative}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(2rem,6.2vw,3.2rem);line-height:1.08;letter-spacing:-.015em;max-width:16ch}
+.hero p{margin-top:14px;font-size:1.1rem;color:var(--ink-soft);max-width:48ch}
+.hero .note{position:absolute;right:0;bottom:6px;font-size:1.45rem;color:var(--red);transform:rotate(-4deg);max-width:13ch;text-align:right}
+@media (max-width:640px){.hero .note{position:static;display:block;margin-top:12px;text-align:left;transform:rotate(-2deg);max-width:none}}
+
+/* classeur à intercalaires */
+.tabs{display:flex;gap:4px;padding-left:10px;overflow-x:auto;scrollbar-width:none;position:relative;z-index:1}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;border:0;font:inherit;font-weight:700;color:#1B2130;padding:12px 18px 10px;border-radius:12px 12px 0 0;cursor:pointer;transform:translateY(6px);transition:transform .15s;white-space:nowrap}
+.tab small{display:block;font-weight:400;font-size:.75rem;opacity:.8}
+.tab[data-tool="courrier"]{background:var(--tab-1)}
+.tab[data-tool="falc"]{background:var(--tab-2)}
+.tab[data-tool="droits"]{background:var(--tab-3)}
+.tab[data-tool="majeur"]{background:var(--tab-4)}
+.tab[aria-selected="true"]{transform:translateY(0);box-shadow:0 -2px 0 var(--ink) inset}
+:root[data-theme="dark"] .tab,:root:not([data-theme="light"]) .tab{color:#1B2130}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tab{color:#0E1118}}
+:root[data-theme="dark"] .tab{color:#0E1118}
+
+@media (max-width:560px){
+  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding-left:0;margin-bottom:10px}
+  .tab{border-radius:10px;transform:none;padding:10px 12px;white-space:normal;text-align:left}
+  .tab[aria-selected="true"]{box-shadow:inset 0 0 0 3px var(--ink)}
+  .tab:last-child:nth-child(odd){grid-column:1/-1}
+  .sheet{border-radius:14px}
+}
+.sheet{background:var(--paper);border-radius:4px 14px 14px 14px;box-shadow:0 1px 0 var(--rule),0 18px 40px -24px rgba(20,30,50,.35);position:relative;border-top:8px solid var(--sheet-tab,var(--tab-1))}
+.sheet[data-tool="falc"]{--sheet-tab:var(--tab-2)}
+.sheet[data-tool="droits"]{--sheet-tab:var(--tab-3)}
+.sheet[data-tool="majeur"]{--sheet-tab:var(--tab-4)}
+.panel{padding:28px 28px 32px 56px;display:flex;flex-direction:column;gap:22px;position:relative}
+.panel::before{content:"";position:absolute;left:36px;top:0;bottom:0;width:2px;background:var(--margin)}
+@media (max-width:560px){.panel{padding:22px 18px 26px 34px}.panel::before{left:20px}}
+.panel h2{font-family:var(--display);font-weight:400;font-size:1.75rem;line-height:1.15}
+.lede{color:var(--ink-soft);max-width:58ch}
+
+/* étapes numérotées (vraie séquence) */
+.step{position:relative;display:flex;flex-direction:column;gap:10px}
+.step>.num{position:absolute;left:-44px;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-weight:700;font-size:.9rem}
+@media (max-width:560px){.step>.num{left:-31px;width:24px;height:24px;font-size:.75rem}}
+.step h3{font-size:1.1rem}
+.step .hint{color:var(--ink-soft);font-size:.92rem}
+
+label{font-weight:700;display:block}
+.field{display:flex;flex-direction:column;gap:6px}
+textarea,select,input[type=text],input[type=number]{width:100%;font:inherit;color:var(--ink);background:var(--paper);border:2px solid var(--rule);border-radius:8px;padding:12px}
+textarea{min-height:150px;resize:vertical;line-height:1.5}
+textarea:hover,select:hover,input:hover{border-color:var(--ink-soft)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+
+button{font:inherit}
+.btn{font-weight:700;padding:13px 20px;border-radius:10px;border:2px solid var(--btn);background:var(--btn);color:var(--btn-ink);cursor:pointer;min-height:50px}
+.btn:hover{filter:brightness(1.15)}
+.btn.line{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn.link{background:none;border:0;color:var(--ink);text-decoration:underline;text-underline-offset:3px;padding:8px 4px;min-height:auto}
+.btn:disabled{opacity:.55;cursor:wait}
+.btn:focus-visible,.tab:focus-visible,.sizes button:focus-visible,textarea:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible,.photo:focus-within{outline:3px solid var(--marker);outline-offset:3px;box-shadow:0 0 0 5px var(--ink)}
+
+.photo{border:2px dashed var(--ink-soft);border-radius:12px;padding:18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;cursor:pointer;background:repeating-linear-gradient(-45deg,transparent 0 12px,rgba(127,140,160,.06) 12px 24px)}
+.photo input{position:absolute;opacity:0;width:1px;height:1px}
+.photo .cam{width:52px;height:52px;flex:none;border-radius:12px;background:var(--marker);display:grid;place-items:center}
+.photo .cam svg{width:28px;height:28px}
+.photo b{display:block;font-size:1.05rem}
+.photo span span{color:var(--ink-soft);font-size:.9rem;font-weight:400;display:block}
+.thumb{max-height:110px;border-radius:6px;border:1px solid var(--rule);margin-left:auto}
+.or{display:flex;align-items:center;gap:12px;color:var(--ink-soft);font-size:.9rem}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--rule)}
+
+.progress{height:8px;border-radius:4px;background:var(--rule);overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:var(--green);transition:width .3s}
+.status{color:var(--ink-soft);font-style:italic}
+
+.promise{display:flex;gap:14px;align-items:flex-start;background:var(--green-bg);border-radius:10px;padding:14px 16px}
+.promise svg{flex:none;width:26px;height:26px;color:var(--green);margin-top:2px}
+.promise p{font-size:.95rem}
+.promise b{color:var(--green)}
+
+.warnline{font-size:.9rem;color:var(--ink-soft);border-left:4px solid var(--marker);padding-left:12px}
+
+/* résultat : la lettre annotée */
+.result{display:flex;flex-direction:column;gap:20px;border-top:2px dashed var(--rule);padding-top:22px}
+.stamp{display:inline-block;width:fit-content;font-family:var(--display);font-size:1.3rem;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border:3px solid currentColor;border-radius:6px;transform:rotate(-3deg);box-shadow:inset 0 0 0 2px var(--paper),inset 0 0 0 4px currentColor}
+.stamp.ok{color:var(--green)} .stamp.warn{color:var(--amber)} .stamp.bad{color:var(--red)}
+.alert{background:var(--red-bg);color:var(--red);border-radius:10px;padding:14px 16px;font-weight:700}
+.block{display:flex;flex-direction:column;gap:8px}
+.block h3{font-size:1.05rem}
+.kicker{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);font-weight:700}
+.deadline{font-family:var(--display);font-size:1.5rem;line-height:1.2}
+ol.todo{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;counter-reset:t}
+ol.todo li{counter-increment:t;display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start}
+ol.todo li::before{content:counter(t);width:28px;height:28px;border:2px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.85rem}
+.letter{white-space:pre-wrap;background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:18px 18px 18px 30px;font-size:.95rem;position:relative;box-shadow:3px 3px 0 var(--rule)}
+.letter::before{content:"";position:absolute;left:16px;top:0;bottom:0;width:2px;background:var(--margin)}
+dl.words{display:grid;grid-template-columns:minmax(90px,max-content) 1fr;gap:6px 16px;margin:0}
+dl.words dt{font-weight:700}
+dl.words dd{margin:0}
+.aside{font-size:1.35rem;color:var(--red);transform:rotate(-2deg);width:fit-content}
+
+/* bibliothèque */
+.lib{display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+.lib details{border-bottom:1px solid var(--rule)}
+.lib summary{cursor:pointer;font-weight:700;padding:14px 4px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.lib summary::-webkit-details-marker{display:none}
+.lib summary::after{content:"+";font-family:var(--display);font-size:1.4rem;line-height:1}
+.lib details[open] summary::after{content:"–"}
+.lib .inner{display:flex;flex-direction:column;gap:12px;padding:0 4px 18px}
+
+/* FALC */
+.out{white-space:pre-wrap;background:var(--paper);border:2px solid var(--ink);border-radius:10px;padding:20px;font-size:1.1rem;line-height:1.75;min-height:3em}
+
+/* droits */
+.aides{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.aide{border:2px solid var(--ink);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;background:var(--paper)}
+.aide .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.aide h3{font-size:1.05rem}
+.tag{flex:none;font-size:.78rem;font-weight:700;padding:3px 9px;border-radius:999px}
+.tag.ok{background:var(--green-bg);color:var(--green)} .tag.warn{background:var(--amber-bg);color:var(--amber)}
+.aide .money{font-family:var(--display);font-size:1.15rem}
+.aide .where{font-size:.92rem;color:var(--ink-soft)}
+
+/* checklist */
+.meter{display:flex;align-items:center;gap:14px}
+.meter .progress{flex:1;height:12px;border-radius:6px}
+.meter b{font-family:var(--display);font-weight:400;font-size:1.3rem;white-space:nowrap}
+.phase{display:flex;flex-direction:column}
+.phase h3{font-family:var(--display);font-weight:400;font-size:1.3rem;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;padding-bottom:6px}
+.phase h3 .when{font-family:var(--hand);font-size:1.35rem;color:var(--red)}
+.item{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--rule)}
+.item input{appearance:none;-webkit-appearance:none;flex:none;width:26px;height:26px;border:2px solid var(--ink);border-radius:6px;margin:2px 0 0;cursor:pointer;display:grid;place-items:center;background:var(--paper)}
+.item input:checked{background:var(--ink)}
+.item input:checked::after{content:"";width:12px;height:7px;border:3px solid var(--paper);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.item input:focus-visible{outline:3px solid var(--marker);outline-offset:2px}
+.item label{font-weight:700;cursor:pointer;min-width:0;flex:1;overflow-wrap:break-word}
+.item small{display:block;font-weight:400;color:var(--ink-soft);font-size:.9rem;margin-top:2px}
+.item input:checked + label{text-decoration:line-through;text-decoration-thickness:2px;color:var(--ink-soft)}
+
+.tab[data-tool="ressources"]{background:var(--tab-2)}
+.sheet[data-tool="ressources"]{--sheet-tab:var(--tab-2)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chipbtn{font:inherit;font-size:.9rem;font-weight:700;padding:8px 14px;border-radius:999px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer}
+.chipbtn[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.chipbtn:focus-visible{outline:3px solid var(--marker);outline-offset:2px}
+.reslist{display:flex;flex-direction:column;gap:12px}
+.rescat{font-family:var(--display);font-weight:400;font-size:1.3rem;margin-top:10px}
+.res{border:1px solid var(--rule);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;background:var(--paper)}
+.res h4{margin:0;font-size:1.05rem}
+.res .small{font-size:.85rem;color:var(--ink-soft)}
+.res .btn{min-height:44px;padding:9px 14px;font-size:.95rem}
+.tab[data-tool="arnaque"]{background:var(--tab-4)}
+.tab[data-tool="lettres"]{background:var(--tab-3)}
+.tab[data-tool="majeur"]{background:var(--tab-5)}
+.sheet[data-tool="arnaque"]{--sheet-tab:var(--tab-4)}
+.sheet[data-tool="lettres"]{--sheet-tab:var(--tab-3)}
+.sheet[data-tool="majeur"]{--sheet-tab:var(--tab-5)}
+.offline{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--green);color:var(--paper);text-align:center;font-weight:700;padding:10px 16px;margin-inline:-16px}
+ul.bring{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.glolist{display:flex;flex-direction:column;margin:0;border-top:1px solid var(--rule)}
+.glo{padding:10px 2px;border-bottom:1px solid var(--rule)}
+.glo dt{font-weight:700}
+.glo dd{margin:2px 0 0;color:var(--ink-soft)}
+@media print{
+  body{background:#fff!important;color:#000;padding:0}
+  body.printing *{visibility:hidden}
+  body.printing .print-me,body.printing .print-me *{visibility:visible}
+  body.printing .print-me{position:absolute;left:0;top:0;width:100%;border:0;box-shadow:none}
+  body.printing .print-me button{display:none}
+}
+footer{margin-top:34px;display:flex;flex-direction:column;gap:10px;color:var(--ink-soft);font-size:.9rem}
+footer .sig{font-size:1.5rem;color:var(--ink);transform:rotate(-2deg);width:fit-content}
+footer nav{display:flex;gap:16px;flex-wrap:wrap}
+footer a{text-underline-offset:3px}
+
+@media (prefers-reduced-motion:no-preference){
+  .result>*{animation:rise .35s ease-out both}
+  .result>*:nth-child(2){animation-delay:.05s}.result>*:nth-child(3){animation-delay:.1s}.result>*:nth-child(4){animation-delay:.15s}
+  @keyframes rise{from{transform:translateY(6px)}to{transform:none}}
+  .stamp{animation:thump .4s cubic-bezier(.3,1.6,.5,1) both}
+  @keyframes thump{from{transform:rotate(-3deg) scale(1.35);opacity:.3}to{transform:rotate(-3deg) scale(1);opacity:1}}
+}
+@media (prefers-reduced-motion:reduce){.progress i,.tab{transition:none}}
+</style>
+</head>
+<body>
+<div class="offline" id="offline" hidden role="status">Tu es hors ligne : Coup de pouce marche quand même. C'est la preuve que rien n'est envoyé.</div>
+<div class="wrap">
+
+  <header class="top">
+    <a class="brand" href="./" aria-label="Coup de pouce, accueil">
+      <span class="seal" aria-hidden="true"><span>c</span></span>
+      <b>Coup de pouce</b>
+    </a>
+    <div class="sizes" role="group" aria-label="Taille du texte">
+      <span aria-hidden="true">Texte</span>
+      <button class="s1" data-fs="16" aria-label="Texte normal">A</button>
+      <button class="s2" data-fs="19" aria-label="Texte grand">A</button>
+      <button class="s3" data-fs="23" aria-label="Texte très grand">A</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Une lettre qui t'inquiète&nbsp;? <span class="mark">On la lit avec toi.</span></h1>
+    <p>C'est gratuit, sans inscription, sans publicité, et rien n'est envoyé sur internet. Tu sauras si c'est grave, ce qu'il faut faire, et avant quelle date.</p>
+    <span class="note hand" aria-hidden="true">tout reste sur ton téléphone ↓</span>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="Les outils">
+    <button class="tab" role="tab" id="t-courrier" data-tool="courrier" aria-controls="courrier">Mon courrier<small>comprendre une lettre</small></button>
+    <button class="tab" role="tab" id="t-arnaque" data-tool="arnaque" aria-controls="arnaque">Arnaque&nbsp;?<small>vérifier un message</small></button>
+    <button class="tab" role="tab" id="t-lettres" data-tool="lettres" aria-controls="lettres">Écrire une lettre<small>modèles à remplir</small></button>
+    <button class="tab" role="tab" id="t-majeur" data-tool="majeur" aria-controls="majeur">Majeur demain<small>sortie de l'ASE</small></button>
+    <button class="tab" role="tab" id="t-ressources" data-tool="ressources" aria-controls="ressources">Qui peut m'aider<small>numéros et associations</small></button>
+  </div>
+
+  <main class="sheet" id="sheet" data-tool="courrier">
+
+    <!-- MON COURRIER -->
+    <section class="panel" id="courrier" role="tabpanel" aria-labelledby="t-courrier">
+      <h2>Mon courrier expliqué</h2>
+
+      <div class="promise">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.4-8 9-4.6-.6-8-4.5-8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+        <p><b>Rien ne quitte ton téléphone.</b> La lettre est lue et analysée directement sur ton appareil. Aucune photo, aucun texte n'est envoyé sur internet.</p>
+      </div>
+
+      <div class="step">
+        <span class="num" aria-hidden="true">1</span>
+        <h3>Prends ta lettre en photo</h3>
+        <label class="photo" for="photo">
+          <span class="cam" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#1B2130" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span>
+          <span><b>Choisir ou prendre une photo</b><span>À plat, avec de la lumière, toute la page visible</span></span>
+          <input type="file" id="photo" accept="image/jpeg,image/png,image/webp">
+          <img id="preview" class="thumb" alt="Ta photo" hidden>
+        </label>
+        <div class="block" id="ocrBox" hidden>
+          <div class="progress"><i id="ocrBar"></i></div>
+          <p class="status" id="ocrTxt"></p>
+        </div>
+        <p class="or">ou</p>
+        <div class="field">
+          <label for="letterText">Colle ou recopie le texte</label>
+          <textarea id="letterText" placeholder="Par exemple : « Suite au contrôle de votre dossier, il apparaît que… »"></textarea>
+        </div>
+        <div class="row"><button class="btn link" id="example">Je veux d'abord essayer avec une fausse lettre</button><button class="btn link" id="readLetter" hidden>Écouter ma lettre à voix haute</button></div>
+      </div>
+
+      <div class="step">
+        <span class="num" aria-hidden="true">2</span>
+        <h3>On t'explique</h3>
+        <div class="row"><button class="btn" id="explain">Expliquer ma lettre</button></div>
+        <p class="status" id="cStatus" hidden></p>
+      </div>
+
+      <div class="result" id="cResult" hidden aria-live="polite"></div>
+
+      <p class="warnline">Ces explications sont générales. Pour une décision importante, vérifie auprès de l'organisme ou dans un espace France Services.</p>
+
+      <div class="block" style="margin-top:8px">
+        <h3 style="font-family:var(--display);font-weight:400;font-size:1.35rem">Les courriers que Coup de pouce connaît</h3>
+        <p class="lede">Tu peux aussi chercher ta lettre directement dans la liste.</p>
+        <div class="lib" id="library"></div>
+      </div>
+
+      <div class="block" style="margin-top:8px">
+        <h3 style="font-family:var(--display);font-weight:400;font-size:1.35rem">Le dico de l'administratif</h3>
+        <p class="lede">Un mot t'échappe dans ta lettre&nbsp;? Cherche-le ici.</p>
+        <div class="field"><label for="gloQ">Chercher un mot</label><input type="text" id="gloQ" placeholder="Par exemple : indu, forclusion, saisie…"></div>
+        <dl class="glolist" id="gloList"></dl>
+      </div>
+    </section>
+
+    <!-- ARNAQUE -->
+    <section class="panel" id="arnaque" role="tabpanel" aria-labelledby="t-arnaque" hidden>
+      <h2>Arnaque ou pas&nbsp;?</h2>
+      <p class="lede">Tu as reçu un SMS, un email ou un message qui te paraît bizarre&nbsp;? Colle-le ici : je cherche les signes d'arnaque. Rien n'est envoyé.</p>
+      <div class="field">
+        <label for="scamIn">Le message reçu</label>
+        <textarea id="scamIn" style="min-height:130px" placeholder="Par exemple : « Votre colis est en attente, réglez 1,99 € ici : … »"></textarea>
+      </div>
+      <div class="row">
+        <button class="btn" id="scamGo">Vérifier le message</button>
+        <button class="btn link" id="scamEx">Essayer avec un faux SMS</button>
+      </div>
+      <div class="result" id="scamOut" hidden aria-live="polite"></div>
+      <div class="block" style="margin-top:6px">
+        <h3>Les 5 règles à retenir</h3>
+        <ol class="todo">
+          <li><span>Une administration ne demande <b>jamais</b> ton mot de passe, ton code reçu par SMS ou ta carte bancaire par message.</span></li>
+          <li><span>Personne d'officiel ne demande de payer en <b>cartes cadeaux</b> ou en coupons (PCS, Transcash…).</span></li>
+          <li><span>Ne clique pas sur le lien : tape toi-même l'adresse du site officiel (qui finit souvent par <b>.gouv.fr</b>).</span></li>
+          <li><span>Plus c'est urgent et menaçant, plus il faut se méfier.</span></li>
+          <li><span>Dans le doute, appelle l'organisme au numéro de son site officiel, ou <b>Info Escroqueries au 0 805 805 817</b> (gratuit).</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- LETTRES -->
+    <section class="panel" id="lettres" role="tabpanel" aria-labelledby="t-lettres" hidden>
+      <h2>Écrire une lettre</h2>
+      <p class="lede">Choisis ta situation, réponds à quelques questions, et ta lettre s'écrit toute seule. Tes informations restent sur ton téléphone.</p>
+      <div class="field">
+        <label for="lType">Ce que tu veux faire</label>
+        <select id="lType"></select>
+      </div>
+      <div class="grid2" id="lFields"></div>
+      <div class="block">
+        <p class="kicker">Ta lettre</p>
+        <div class="letter" id="lOut"></div>
+        <div class="row">
+          <button class="btn" id="lCopy">Copier la lettre</button>
+          <button class="btn line" id="lPrint">Imprimer</button>
+        </div>
+        <p class="warnline" id="lTip"></p>
+      </div>
+    </section>
+
+    <!-- MAJEUR DEMAIN -->
+    <section class="panel" id="majeur" role="tabpanel" aria-labelledby="t-majeur" hidden>
+      <h2>Majeur demain</h2>
+      <p class="lede">Tu es suivi·e par l'ASE et tes 18 ans approchent&nbsp;? Voici tout ce qu'il faut préparer, dans l'ordre. Coche au fur et à mesure&nbsp;: c'est gardé sur ton téléphone, personne d'autre ne le voit.</p>
+      <div class="meter"><div class="progress"><i id="bar"></i></div><b id="barTxt"></b></div>
+      <div id="checklist" style="display:flex;flex-direction:column;gap:26px"></div>
+      <p class="warnline">Besoin de parler à quelqu'un&nbsp;? La Mission locale accompagne les 16–25 ans. Le 119 répond aussi aux jeunes, jour et nuit.</p>
+    </section>
+    <!-- RESSOURCES -->
+    <section class="panel" id="ressources" role="tabpanel" aria-labelledby="t-ressources" hidden>
+      <h2>Qui peut m'aider&nbsp;?</h2>
+      <p class="lede">Des numéros, des sites et des associations pour être accompagné·e gratuitement. Tu n'es pas seul·e face à tes papiers.</p>
+      <div class="field">
+        <label for="resQ">Chercher</label>
+        <input type="text" id="resQ" placeholder="Par exemple : loyer, dette, arnaque, CAF…">
+      </div>
+      <div class="chips" id="resCats" role="group" aria-label="Thèmes"></div>
+      <div id="resList" class="reslist"></div>
+      <p class="warnline">Les numéros « service gratuit + prix d'un appel » coûtent le prix d'un appel normal. Une information a changé ou une association manque&nbsp;? Écris à <a href="mailto:hadrienbasch@gmail.com">hadrienbasch@gmail.com</a>.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p class="sig hand">Fait avec soin, bénévolement.</p>
+    <p>Coup de pouce est gratuit, sans publicité et sans cookies. Une erreur, un courrier qui manque&nbsp;? Écris-nous&nbsp;: <a href="mailto:hadrienbasch@gmail.com">hadrienbasch@gmail.com</a></p>
+    <nav><a href="confiance.html">Pourquoi tu peux avoir confiance</a><a href="confidentialite.html">Confidentialité</a><a href="mentions-legales.html">Mentions légales</a></nav>
+    <div class="row"><button class="btn line" id="wipe">Tout effacer de ce téléphone</button></div>
+  </footer>
+</div>
+
+<script src="ocr/tesseract.min.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const el=(tag,props={},kids=[])=>{const e=document.createElement(tag);for(const[k,v]of Object.entries(props)){if(k==="text")e.textContent=v;else if(k==="cls")e.className=v;else e.setAttribute(k,v)}(Array.isArray(kids)?kids:[kids]).forEach(c=>c&&e.append(typeof c==="string"?document.createTextNode(c):c));return e};
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+
+/* classeur */
+const TOOLS=["courrier","arnaque","lettres","majeur","ressources"];
+function openTool(t,focus){
+  TOOLS.forEach(x=>{$(x).hidden=x!==t});
+  document.querySelectorAll(".tab").forEach(b=>{const on=b.dataset.tool===t;b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1});
+  $("sheet").dataset.tool=t;store.set("cdp-tool",t);
+  if(focus)$("t-"+t).focus();
+}
+document.querySelectorAll(".tab").forEach(b=>{
+  b.addEventListener("click",()=>openTool(b.dataset.tool));
+  b.addEventListener("keydown",e=>{const i=TOOLS.indexOf(b.dataset.tool);if(e.key==="ArrowRight")openTool(TOOLS[(i+1)%5],true);if(e.key==="ArrowLeft")openTool(TOOLS[(i+4)%5],true)});
+});
+const fromHash=location.hash.slice(1);
+openTool(TOOLS.includes(fromHash)?fromHash:store.get("cdp-tool","courrier"));
+
+/* taille du texte */
+function setFs(v){document.documentElement.style.setProperty("--fs",v+"px");document.querySelectorAll(".sizes button").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.fs===v));store.set("cdp-fs2",v)}
+document.querySelectorAll(".sizes button").forEach(b=>b.onclick=()=>setFs(+b.dataset.fs));
+setFs(store.get("cdp-fs2",19));
+
+/* voix */
+const canSpeak="speechSynthesis" in window;
+function speak(text){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="fr-FR";u.rate=.92;speechSynthesis.speak(u)}catch{}}
+function stopSpeak(){try{speechSynthesis.cancel()}catch{}}
+
+/* ---------- MON COURRIER ---------- */
+/* ===== Base de courriers reconnus (sans IA) =====
+ Chaque cas : org (expéditeur), g (gravité : rassurant | a_traiter | urgent),
+ m : motifs recherchés (au moins `min` doivent être trouvés, défaut 1),
+ r : ce que dit la lettre, f : ce qu'il faut faire, h : qui peut aider, l : lettre type (facultatif). */
+const ORGS=[
+ ["CAF",/caisse d.allocations familiales|\bcaf\b|allocataire/i],
+ ["Impôts",/finances publiques|dgfip|impots\.gouv|avis d.imp[oô]t|service des imp[oô]ts/i],
+ ["Assurance maladie",/assurance maladie|\bcpam\b|ameli/i],
+ ["France Travail",/france travail|p[oô]le emploi/i],
+ ["Commissaire de justice",/commissaire de justice|huissier/i],
+ ["Préfecture",/pr[ée]fecture|pr[ée]fet/i],
+ ["Tribunal",/tribunal|greffe|juge des contentieux|juge de l.ex[ée]cution/i],
+ ["Fournisseur d'énergie",/edf|engie|totalenergies|fournisseur d.[ée]nergie|[ée]lectricit[ée]|\bgaz\b/i],
+ ["ANTAI (amendes)",/antai|avis de contravention|amende forfaitaire|officier du minist[èe]re public/i],
+ ["Bailleur",/bailleur|propri[ée]taire|loyer/i]
+];
+const CASES=[
+ {id:"caf-indu",a:["Le courrier de la CAF", "Ton numéro d'allocataire", "Tes justificatifs de revenus des mois concernés"],t:"CAF : trop-perçu (indu)",org:"CAF",g:"a_traiter",m:[/\bindu\b|trop[- ]per[çc]u|per[çc]u [àa] tort|sommes ind[uû]ment/i],
+  r:"La CAF pense t'avoir versé trop d'argent et veut le récupérer, le plus souvent en baissant tes prochaines aides.",
+  f:["Vérifie la période et le montant : est-ce qu'ils correspondent à un vrai changement (travail, déménagement, vie en couple) ?","Tu n'es pas d'accord ? Écris à la Commission de recours amiable de ta CAF dans les 2 mois.","Tu es d'accord mais tu ne peux pas payer ? Demande une remise de dette ou un échéancier (sur caf.fr ou par courrier)."],
+  h:"Accueil CAF, France Services, CCAS, assistante sociale.",
+  l:"Objet : Contestation de la notification d'indu{MONTANT_OBJ}\nN° allocataire : [ton numéro]\n\nMadame, Monsieur,\n\nJe conteste la décision de récupération d'un indu{MONTANT_TXT} que j'ai reçue{DATE_TXT}.\n\n[Explique en deux ou trois phrases pourquoi tu n'es pas d'accord.]\n\nJe vous demande de réexaminer ma situation. À titre subsidiaire, compte tenu de mes difficultés financières, je sollicite une remise de dette ou un échéancier de remboursement.\n\nJe vous prie d'agréer, Madame, Monsieur, mes salutations distinguées.\n\n[Prénom Nom]\n[Adresse]\n[Signature]"},
+ {id:"caf-pieces",a:["Le courrier de la CAF", "Les documents demandés", "Ton numéro d'allocataire"],t:"CAF : demande de justificatifs",org:"CAF",g:"a_traiter",m:[/pi[èe]ces? justificatives?|justificatifs?|documents? manquants?|nous retourner|compl[ée]ter votre dossier/i],
+  r:"La CAF a besoin d'un ou plusieurs documents pour étudier ou continuer tes droits. Sans réponse, tes aides peuvent être suspendues.",
+  f:["Repère la liste des documents demandés et la date limite.","Envoie-les depuis ton espace sur caf.fr (Mon compte > Envoyer un document) ou par courrier.","Garde une copie de ce que tu envoies."],
+  h:"Accueil CAF, France Services."},
+ {id:"caf-controle",a:["Le courrier", "Pièce d'identité", "Bail ou quittance de loyer", "Bulletins de salaire ou attestations de revenus récents"],t:"CAF : contrôle de ta situation",org:"CAF",g:"a_traiter",m:[/contr[ôo]le|contr[ôo]leur|v[ée]rification de (votre )?situation|questionnaire/i],min:1,
+  r:"La CAF vérifie que tes informations sont à jour. C'est courant et ça ne veut pas dire que tu as fait une erreur.",
+  f:["Réponds dans le délai demandé : questionnaire à remplir ou rendez-vous.","Prépare tes justificatifs (revenus, bail, situation familiale).","Si un contrôleur vient chez toi, tu peux demander à voir sa carte professionnelle."],
+  h:"Accueil CAF, France Services, assistante sociale."},
+ {id:"caf-suspension",a:["Le courrier", "Ton numéro d'allocataire", "Les documents qui manquaient"],t:"CAF : suspension ou arrêt des droits",org:"CAF",g:"urgent",m:[/suspen(sion|du)|fin de (vos )?droits|n.avez plus droit|radiation|interruption/i],
+  r:"La CAF arrête ou suspend le versement d'une aide.",
+  f:["Regarde la raison indiquée : souvent un document ou une déclaration manquante.","Envoie ce qui manque au plus vite, sur caf.fr.","Si tu n'es pas d'accord, écris à la Commission de recours amiable dans les 2 mois."],
+  h:"Accueil CAF, France Services, CCAS."},
+ {id:"impots-avis",a:["L'avis d'impôt", "Ton numéro fiscal (en haut de l'avis)"],t:"Impôts : avis d'impôt sur le revenu",org:"Impôts",g:"rassurant",m:[/avis d.imp[oô]t|imp[oô]t sur le revenu|revenu fiscal de r[ée]f[ée]rence/i],
+  r:"C'est le résumé de ta déclaration de revenus. Il dit si tu dois payer, si on te rembourse, ou si tu n'as rien à payer. Il sert aussi de justificatif pour beaucoup d'aides.",
+  f:["Regarde la ligne « Reste à payer » ou « Montant remboursé ».","Garde-le précieusement : on te le demandera pour un logement social, une bourse, la cantine…","Une erreur ? Corrige-la depuis ta messagerie sur impots.gouv.fr (en général jusqu'au 31 décembre de la deuxième année)."],
+  h:"Centre des finances publiques, France Services."},
+ {id:"impots-relance",a:["La relance", "Ton numéro fiscal", "Tes justificatifs de revenus et de charges"],t:"Impôts : relance, majoration ou mise en demeure",org:"Impôts",g:"a_traiter",m:[/majoration|relance|mise en demeure|reste [àa] payer|lettre de relance|avis de mise en recouvrement/i],
+  r:"Une somme d'impôt n'a pas été payée à temps. Une majoration (souvent 10 %) peut s'ajouter.",
+  f:["Vérifie le montant et l'impôt concerné (revenu, taxe foncière…).","Si tu ne peux pas tout payer, demande un délai de paiement par la messagerie sur impots.gouv.fr.","En cas de grosses difficultés, tu peux demander une remise gracieuse de la majoration."],
+  h:"Centre des finances publiques, France Services, Point-justice.",
+  l:"Objet : Demande de délai de paiement{MONTANT_OBJ}\nN° fiscal : [ton numéro fiscal]\n\nMadame, Monsieur,\n\nJ'ai reçu{DATE_TXT} une relance concernant un montant{MONTANT_TXT} restant à payer.\n\nEn raison de difficultés financières [explique brièvement], je ne suis pas en mesure de régler cette somme en une seule fois. Je vous propose de la payer en [nombre] mensualités de [montant] €.\n\nJe sollicite également, si possible, la remise gracieuse de la majoration.\n\nJe vous prie d'agréer, Madame, Monsieur, mes salutations distinguées.\n\n[Prénom Nom]\n[Adresse]"},
+ {id:"cpam-pieces",a:["Le courrier", "Ta carte Vitale", "Les documents demandés"],t:"Assurance maladie : demande de documents ou fin de droits",org:"Assurance maladie",g:"a_traiter",m:[/pi[èe]ces?|justificatifs?|fin de (vos )?droits|compl[ée]mentaire sant[ée] solidaire|carte vitale|renouvellement/i],
+  r:"La Sécurité sociale a besoin d'un document, ou t'informe que des droits (par exemple la Complémentaire santé solidaire) vont s'arrêter.",
+  f:["Envoie le document demandé depuis ton compte ameli.fr (Messagerie).","Pour la Complémentaire santé solidaire, fais la demande de renouvellement sur ameli.fr avant la date indiquée."],
+  h:"Accueil CPAM, France Services, CCAS."},
+ {id:"ft-convocation",a:["La convocation", "Ton identifiant France Travail", "Ton CV à jour"],t:"France Travail : convocation",org:"France Travail",g:"a_traiter",m:[/convocation|convoqu[ée]|rendez-vous|entretien/i],
+  r:"France Travail te donne rendez-vous. Si tu ne viens pas sans prévenir, tes allocations peuvent être réduites ou suspendues.",
+  f:["Note la date, l'heure et le lieu.","Si tu ne peux pas venir, préviens AVANT, depuis ton espace francetravail.fr, avec un justificatif si possible."],
+  h:"Ton conseiller France Travail, la Mission locale (moins de 26 ans), France Services."},
+ {id:"ft-sanction",a:["Le courrier", "Ton identifiant France Travail", "Les justificatifs de ton absence ou de ta situation"],t:"France Travail : avertissement, radiation ou suspension",org:"France Travail",g:"urgent",m:[/radiation|radi[ée]|avertissement|sanction|suppression|suspension/i],
+  r:"France Travail envisage ou décide une sanction : réduction, suspension de tes allocations ou radiation de la liste.",
+  f:["Si c'est un avertissement avant sanction : réponds vite par écrit pour expliquer ta situation, dans le délai indiqué.","Si la décision est prise : tu peux faire un recours auprès de ton agence, en général dans les 2 mois.","Réinscris-toi dès que possible si tu as été radié·e."],
+  h:"Ton conseiller, le médiateur de France Travail, France Services, un syndicat ou une association de chômeurs.",
+  l:"Objet : Recours contre la décision{DATE_OBJ}\nIdentifiant : [ton identifiant]\n\nMadame, Monsieur,\n\nJe conteste la décision que j'ai reçue{DATE_TXT}.\n\n[Explique ce qui s'est passé : rendez-vous manqué pour une raison valable, courrier non reçu, etc.]\n\nJe vous joins [les justificatifs] et vous demande de bien vouloir revenir sur cette décision.\n\nJe vous prie d'agréer, Madame, Monsieur, mes salutations distinguées.\n\n[Prénom Nom]\n[Adresse]"},
+ {id:"ft-tropercu",a:["Le courrier", "Ton identifiant", "Tes bulletins de salaire de la période"],t:"France Travail : trop-perçu d'allocations",org:"France Travail",g:"a_traiter",m:[/trop[- ]per[çc]u|indu|rembourser|remboursement/i],
+  r:"France Travail pense t'avoir versé trop d'allocations et demande un remboursement.",
+  f:["Vérifie la période et la raison (reprise de travail, déclaration oubliée…).","Pas d'accord : fais un recours auprès de ton agence.","D'accord mais pas les moyens : demande un échéancier ou une remise."],
+  h:"Ton conseiller, le médiateur de France Travail, France Services."},
+ {id:"loyer-commandement",a:["Le commandement de payer", "Ton bail", "Tes quittances et preuves de paiement", "Tes justificatifs de revenus"],free:1,t:"Logement : commandement de payer les loyers",org:"Commissaire de justice",g:"urgent",m:[/commandement de payer/i,/loyers?|bail|clause r[ée]solutoire/i],min:2,
+  r:"Ton propriétaire te réclame officiellement les loyers impayés. Si rien n'est fait dans le délai écrit (souvent 6 semaines), il peut demander au juge la fin du bail.",
+  f:["N'ignore surtout pas ce courrier : le délai est court.","Contacte tout de suite l'ADIL de ton département (conseil gratuit sur le logement).","Demande une aide au Fonds de solidarité logement (FSL) auprès du département ou du CCAS.","Propose un plan de paiement à ton propriétaire, par écrit."],
+  h:"ADIL, CCAS, assistante sociale, Point-justice."},
+ {id:"expulsion",a:["L'assignation ou le courrier", "Ton bail", "Tes preuves de paiement", "Tes justificatifs de revenus et de charges"],free:1,t:"Logement : assignation ou procédure d'expulsion",org:"Tribunal",g:"urgent",m:[/expulsion|assignation|audience|quitter les lieux|commandement de quitter/i],
+  r:"Une procédure judiciaire est lancée pour te faire quitter ton logement. Tu as encore des moyens d'agir.",
+  f:["Va à l'audience si tu es convoqué·e : le juge peut accorder des délais.","Demande l'aide juridictionnelle pour avoir un avocat gratuit ou presque.","Contacte vite l'ADIL et ta mairie (CCAS).","Bon à savoir : pendant la trêve hivernale (du 1er novembre au 31 mars), les expulsions sont en principe suspendues."],
+  h:"ADIL, Point-justice, CCAS, Fondation pour le logement des défavorisés."},
+ {id:"mise-en-demeure",a:["La mise en demeure", "Le contrat ou la facture d'origine", "Tes justificatifs de revenus"],free:1,t:"Dette : mise en demeure de payer",org:"",g:"a_traiter",m:[/mise en demeure/i,/payer|r[ée]gler|somme|montant|cr[ée]ance/i],min:2,
+  r:"Quelqu'un (une entreprise, un organisme de crédit, une société de recouvrement) te demande officiellement de payer une dette avant d'aller plus loin.",
+  f:["Vérifie que la dette est réelle et que le montant est juste. Demande le détail par écrit.","Une société de recouvrement ne peut pas saisir tes biens sans décision de justice.","Propose un échéancier réaliste par écrit.","Plusieurs dettes à la fois ? Pense au dossier de surendettement à la Banque de France (gratuit)."],
+  h:"Point-justice, association de consommateurs, CCAS, Banque de France (surendettement).",
+  l:"Objet : Proposition d'échéancier{MONTANT_OBJ}\nRéférence : [référence du dossier]\n\nMadame, Monsieur,\n\nJ'ai bien reçu votre mise en demeure{DATE_TXT}{MONTANT_TXT}.\n\nMa situation financière ne me permet pas de régler cette somme en une fois. Je vous propose de la rembourser en [nombre] mensualités de [montant] €, à partir du [date].\n\nMerci de me confirmer votre accord par écrit.\n\nJe vous prie d'agréer, Madame, Monsieur, mes salutations distinguées.\n\n[Prénom Nom]\n[Adresse]"},
+ {id:"injonction",a:["L'ordonnance et l'acte du commissaire de justice", "Le contrat ou la facture d'origine"],free:1,t:"Dette : ordonnance d'injonction de payer",org:"Tribunal",g:"urgent",m:[/injonction de payer/i],
+  r:"Un juge a ordonné que tu payes une dette, à la demande d'un créancier. Tu peux t'y opposer si tu n'es pas d'accord.",
+  f:["Regarde la date à laquelle le commissaire de justice t'a remis ce document.","Pour contester, fais opposition au tribunal indiqué, en général dans le mois qui suit.","Après ce délai, la décision peut être exécutée (saisie possible)."],
+  h:"Point-justice, avocat (aide juridictionnelle possible), association de consommateurs."},
+ {id:"saisie",a:["L'acte de saisie", "Tes derniers relevés bancaires", "Tes justificatifs de revenus"],free:1,t:"Dette : saisie sur salaire ou sur compte",org:"Commissaire de justice",g:"urgent",m:[/saisie|saisie-attribution|saisie des r[ée]mun[ée]rations|avis [àa] tiers d[ée]tenteur|saisie administrative/i],
+  r:"Une somme va être (ou a été) prise directement sur ton salaire ou ton compte bancaire pour payer une dette.",
+  f:["Ta banque doit te laisser un minimum sur ton compte (le « solde bancaire insaisissable », équivalent au RSA d'une personne seule). Demande-le-lui.","Contacte le commissaire de justice ou l'organisme pour proposer un échéancier.","Si tu contestes, tu peux saisir le juge de l'exécution dans le délai indiqué (souvent 1 mois)."],
+  h:"Point-justice, avocat (aide juridictionnelle), CCAS, Banque de France (surendettement)."},
+ {id:"pref-recepisse",a:["Le récépissé", "Ton passeport"],t:"Préfecture : récépissé ou attestation",org:"Préfecture",g:"rassurant",m:[/r[ée]c[ée]piss[ée]|attestation de d[ée]p[ôo]t|autorisation provisoire/i],
+  r:"C'est la preuve que ta demande de titre de séjour est en cours. Il te permet souvent de rester en France (et parfois de travailler) pendant l'examen.",
+  f:["Vérifie la date de fin de validité.","Garde-le toujours sur toi avec ton passeport.","Avant la date de fin, pense à demander un renouvellement si tu n'as pas encore de réponse."],
+  h:"La Cimade, associations d'aide aux personnes étrangères, France Services."},
+ {id:"pref-oqtf",a:["La décision de la préfecture et son enveloppe", "Ton passeport", "Toutes tes preuves de présence en France (factures, bulletins de salaire, attestations)"],free:1,t:"Préfecture : refus de titre ou obligation de quitter le territoire (OQTF)",org:"Préfecture",g:"urgent",m:[/obligation de quitter|\boqtf\b|refus de (titre|s[ée]jour|d[ée]livrance)|refus de renouvellement/i],
+  r:"La préfecture refuse ton titre de séjour et peut te demander de quitter la France. Tu peux faire un recours, mais les délais sont très courts : souvent 30 jours, parfois 15 jours ou même 48 heures.",
+  f:["Regarde TOUT DE SUITE le délai de recours écrit sur la décision.","Contacte immédiatement une association spécialisée ou un avocat.","Garde toutes tes preuves de présence et d'insertion en France (bulletins de salaire, attestations, factures)."],
+  h:"La Cimade, associations d'aide aux étrangers, Point-justice, avocat (aide juridictionnelle possible)."},
+ {id:"energie",a:["La relance", "Ta dernière facture", "Ton chèque énergie si tu en as un"],t:"Énergie : facture impayée ou risque de coupure",org:"Fournisseur d'énergie",g:"a_traiter",m:[/impay[ée]|relance|coupure|suspension de (la )?fourniture|r[ée]duction de puissance|r[ée]siliation/i],
+  r:"Ton fournisseur d'électricité ou de gaz te réclame une facture en retard et peut réduire ou couper la fourniture.",
+  f:["Appelle ton fournisseur pour demander un échéancier.","Utilise ton chèque énergie si tu en as un.","Demande une aide au Fonds de solidarité logement (FSL) auprès du CCAS.","Pendant la trêve hivernale (1er novembre – 31 mars), les coupures sont en principe interdites (la puissance peut être réduite)."],
+  h:"CCAS, assistante sociale, médiateur national de l'énergie.",
+  l:"Objet : Demande d'échéancier{MONTANT_OBJ}\nN° client : [ton numéro client]\n\nMadame, Monsieur,\n\nJ'ai reçu{DATE_TXT} un courrier concernant une facture impayée{MONTANT_TXT}.\n\nEn raison de difficultés financières, je vous demande de bien vouloir m'accorder un échéancier de [nombre] mois, et de ne pas suspendre ma fourniture pendant ce temps.\n\nJe vous prie d'agréer, Madame, Monsieur, mes salutations distinguées.\n\n[Prénom Nom]\n[Adresse]"},
+ {id:"amende",a:["L'avis de contravention", "Ta carte grise"],free:1,t:"Amende : avis de contravention",org:"ANTAI (amendes)",g:"a_traiter",m:[/avis de contravention|amende forfaitaire(?! major)|avis de paiement|\bamende\b/i],
+  r:"Tu as reçu une amende (souvent un excès de vitesse ou un stationnement). Le montant baisse si tu payes vite, et augmente si tu attends trop.",
+  f:["Payer : sur amendes.gouv.fr, par téléphone ou par timbre. Payer dans les 15 jours donne souvent un montant minoré.","Ce n'était pas toi au volant ? Désigne le conducteur ou conteste sur antai.gouv.fr, en général sous 45 jours.","Méfie-toi des SMS qui demandent de payer une amende par un lien : ce sont souvent des arnaques. Le seul site officiel est amendes.gouv.fr."],
+  h:"France Services, Point-justice."},
+ {id:"amende-majoree",a:["L'avis d'amende majorée", "L'avis de départ si tu l'as reçu"],free:1,t:"Amende : amende forfaitaire majorée",org:"ANTAI (amendes)",g:"urgent",m:[/amende forfaitaire major[ée]e|majoration de l.amende|titre ex[ée]cutoire/i],
+  r:"Une amende n'a pas été payée ou contestée à temps : son montant a augmenté.",
+  f:["Si tu la payes, fais-le vite pour éviter des saisies.","Si tu n'as jamais reçu le premier avis ou si tu contestes, fais une réclamation, en général dans les 3 mois (sur antai.gouv.fr).","Si tu ne peux pas payer d'un coup, demande un délai au Trésor public."],
+  h:"France Services, Point-justice."}
+];
+/* Signes d'arnaque */
+const SCAM=[
+ [/carte[s]? cadeau|coupon (pcs|transcash|neosurf)|\bpcs\b|transcash|neosurf|paysafecard/i,"paiement par carte cadeau ou coupon (aucune administration ne demande ça)"],
+ [/bit\.ly|tinyurl|https?:\/\/(?![^\s]*\.gouv\.fr)[^\s]+/i,"un lien internet qui n'est pas un site officiel en .gouv.fr"],
+ [/cliquez|cliquer (ici|sur le lien)/i,"on te demande de cliquer sur un lien"],
+ [/(sous|dans les) (24|48) ?h(eures)?|imm[ée]diatement sinon|compte (sera )?bloqu[ée]|dernier avis avant/i,"une urgence exagérée pour te faire paniquer"],
+ [/code (de )?(confirmation|v[ée]rification) re[çc]u par sms|mot de passe|coordonn[ée]es bancaires|num[ée]ro de carte/i,"on te demande un code, un mot de passe ou ta carte bancaire"]
+];
+
+/* lecture de la photo sur l'appareil */
+let ocrWorker=null;
+async function getOcr(onProg){
+  if(ocrWorker)return ocrWorker;
+  if(!window.Tesseract)throw new Error("noocr");
+  const base=new URL("ocr/",location.href).href;
+  const res=await fetch(base+"lang/fra.wasm");if(!res.ok)throw new Error("nolang");
+  const data=new Uint8Array(await res.arrayBuffer());
+  ocrWorker=await Tesseract.createWorker([{code:"fra",data}],1,{workerPath:base+"worker.min.js",corePath:base+"core",workerBlobURL:false,cacheMethod:"none",logger:m=>onProg&&onProg(m)});
+  return ocrWorker;
+}
+$("photo").addEventListener("change",async e=>{
+  const f=e.target.files[0];if(!f)return;
+  $("preview").src=URL.createObjectURL(f);$("preview").hidden=false;
+  const bar=$("ocrBar"),t=$("ocrTxt");$("ocrBox").hidden=false;bar.style.width="5%";
+  t.textContent="Préparation de la lecture (la première fois, environ 20 secondes)…";
+  try{
+    const w=await getOcr(m=>{if(m.status==="recognizing text"){bar.style.width=Math.round(10+m.progress*90)+"%";t.textContent="Lecture de ta lettre… "+Math.round(m.progress*100)+" %"}});
+    const {data}=await w.recognize(f);bar.style.width="100%";
+    const txt=(data.text||"").trim();
+    if(txt.length<30){t.textContent="Je n'arrive pas à bien lire cette photo. Essaie avec plus de lumière, la lettre bien à plat, ou recopie le texte.";return}
+    $("letterText").value=txt;t.textContent="Lettre lue. Tu peux corriger le texte ci-dessous si besoin.";
+    explain();
+  }catch{t.textContent="La lecture de photo ne marche pas sur cet appareil. Tu peux recopier le texte à la main."}
+});
+
+/* analyse par règles */
+const MOIS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+const NUM={un:1,une:1,deux:2,trois:3,quatre:4,cinq:5,six:6,sept:7,huit:8,dix:10,quinze:15,vingt:20,trente:30,"quarante-cinq":45};
+const fmtDate=d=>d.toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"});
+function parseDates(t){
+  const out=[];let m;
+  const re1=/\b(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})\b/g;
+  while((m=re1.exec(t))){let y=+m[3];if(y<100)y+=2000;const d=new Date(y,+m[2]-1,+m[1]);if(+m[2]>=1&&+m[2]<=12&&+m[1]<=31&&y>1990&&y<2100)out.push({d,i:m.index})}
+  const re2=new RegExp("\\b(\\d{1,2})(?:er)?\\s+("+MOIS.join("|").replace("é","[ée]").replace("û","[uû]")+")\\s+(\\d{4})","gi");
+  while((m=re2.exec(t))){const mi=MOIS.findIndex(x=>x.normalize("NFD").replace(/\p{M}/gu,"")===m[2].toLowerCase().normalize("NFD").replace(/\p{M}/gu,""));if(mi>=0)out.push({d:new Date(+m[3],mi,+m[1]),i:m.index})}
+  return out.sort((a,b)=>a.i-b.i);
+}
+function analyse(raw){
+  const t=raw.replace(/[’`]/g,"'").replace(/\s+/g," ");
+  const res={};
+  // expéditeur
+  let best=null;ORGS.forEach(([n,re])=>{const k=(t.match(new RegExp(re.source,"gi"))||[]).length;if(k&&(!best||k>best.k))best={n,k}});
+  res.org=best?.n||null;
+  // cas
+  let top=null;
+  CASES.forEach((c,idx)=>{
+    const hits=c.m.map(re=>t.match(re)).filter(Boolean);
+    if(hits.length<(c.min||1))return;
+    let s=hits.length*2;
+    if(c.org&&res.org===c.org)s+=3;
+    else if(c.org&&!c.free)return;
+    else if(c.org&&res.org&&c.org!==res.org)s-=1;
+    if(c.g==="urgent")s+=.5;
+    s-=idx*.01;
+    if(s>0&&(!top||s>top.s))top={c,s,words:hits.map(h=>h[0])};
+  });
+  res.case=top?.c||null;res.words=top?top.words:[];
+  // montants
+  const am=[];let m;const reA=/(\d{1,3}(?:[  .]\d{3})*(?:,\d{1,2})?)\s?(?:€|euros?\b|EUR\b)/gi;
+  while((m=reA.exec(t)))am.push(m[1].replace(/[ .]/g," ").trim()+" €");
+  res.amounts=[...new Set(am)];
+  // dates
+  const dates=parseDates(t);
+  const dl=t.match(/(avant le|au plus tard le|jusqu'au|date limite[^0-9a-z]{0,12}|d'ici le|au plus tard)\s*(\d{1,2}(?:[\/.-]\d{1,2}[\/.-]\d{2,4}|(?:er)?\s+\p{L}+\s+\d{4}))/iu);
+  if(dl){const p=parseDates(dl[2]);if(p[0])res.deadline=p[0].d}
+  res.letterDate=(dates.find(x=>x.i<600)||{}).d||null;
+  const dm=t.match(/d[ée]lai (?:de |d')?(\d+|un|une|deux|trois|quatre|cinq|six|huit|dix|quinze|vingt|trente|quarante-cinq)\s*(jours?|mois|semaines?)/i);
+  if(dm){const n=/^\d+$/.test(dm[1])?+dm[1]:NUM[dm[1].toLowerCase()];res.delay={n,u:dm[2].toLowerCase()};
+    if(!res.deadline&&n){const d=new Date();if(/^mois/.test(res.delay.u))d.setMonth(d.getMonth()+n);else if(/^sem/.test(res.delay.u))d.setDate(d.getDate()+7*n);else d.setDate(d.getDate()+n);res.approx=d}}
+  // arnaque
+  res.scam=SCAM.filter(([re])=>re.test(t)).map(([,why])=>why);
+  return res;
+}
+const G={rassurant:["ok","Pas grave"],a_traiter:["warn","À traiter"],urgent:["bad","Urgent"]};
+function fillLetter(l,a){
+  const mt=a.amounts.length?a.amounts[a.amounts.length>1?a.amounts.length-1:0]:null;
+  const ld=a.letterDate?a.letterDate.toLocaleDateString("fr-FR"):null;
+  return l.replace("{MONTANT_OBJ}",mt?" – "+mt:"").replace("{MONTANT_TXT}",mt?" de "+mt:"").replace("{DATE_TXT}",ld?" le "+ld:"").replace("{DATE_OBJ}",ld?" du "+ld:"");
+}
+function fiche(c,a){
+  const out=[];const g=G[c.g];
+  out.push(el("div",{cls:"block"},[el("span",{cls:"stamp "+g[0],text:g[1]})]));
+  out.push(el("div",{cls:"block"},[el("p",{cls:"kicker",text:c.t}),el("p",{style:"font-size:1.1rem",text:c.r})]));
+  if(a){
+    if(a.deadline)out.push(el("div",{cls:"block"},[el("p",{cls:"kicker",text:"À faire avant"}),el("p",{cls:"deadline"},el("span",{cls:"mark",text:fmtDate(a.deadline)}))]));
+    else if(a.approx)out.push(el("div",{cls:"block"},[el("p",{cls:"kicker",text:"Délai indiqué : "+a.delay.n+" "+a.delay.u}),el("p",{cls:"deadline"},el("span",{cls:"mark",text:"vers le "+fmtDate(a.approx)})),el("p",{cls:"warnline",text:"Calculé à partir d'aujourd'hui. Le délai compte en général à partir du jour où tu as reçu la lettre : si tu l'as reçue il y a plusieurs jours, c'est plus tôt."})]));
+    if(a.amounts.length)out.push(el("div",{cls:"block"},[el("p",{cls:"kicker",text:a.amounts.length>1?"Montants trouvés":"Montant"}),el("p",{cls:"deadline",text:a.amounts.slice(0,4).join(" · ")})]));
+  }
+  const ol=el("ol",{cls:"todo"});c.f.forEach(s=>ol.append(el("li",{},el("span",{text:s}))));
+  out.push(el("div",{cls:"block"},[el("h3",{text:"Ce que tu dois faire"}),ol]));
+  out.push(el("div",{cls:"block"},[el("h3",{text:"Qui peut t'aider gratuitement"}),el("p",{text:c.h})]));
+  if(c.a){const ul=el("ul",{cls:"bring"});c.a.forEach(x=>ul.append(el("li",{text:x})));out.push(el("div",{cls:"block"},[el("h3",{text:"Si tu vas à un rendez-vous, apporte"}),ul]))}
+  if(c.l){
+    const txt=a?fillLetter(c.l,a):fillLetter(c.l,{amounts:[],letterDate:null});
+    const pre=el("div",{cls:"letter",text:txt});
+    const cp=el("button",{cls:"btn line",text:"Copier la lettre"});
+    cp.onclick=()=>navigator.clipboard.writeText(txt).then(()=>cp.textContent="Copiée ✓",()=>{const s=getSelection(),rg=document.createRange();rg.selectNodeContents(pre);s.removeAllRanges();s.addRange(rg);cp.textContent="Texte sélectionné"});
+    out.push(el("div",{cls:"block"},[el("h3",{text:"Une lettre de réponse prête"}),el("p",{cls:"aside hand",text:"remplace ce qui est entre crochets ↓"}),pre,el("div",{cls:"row"},cp)]));
+  }
+  if(canSpeak){
+    const spoken=[g[1],c.t,c.r,a?.deadline?"À faire avant le "+fmtDate(a.deadline):"",...c.f].filter(Boolean).join(". ");
+    const b=el("button",{cls:"btn line",text:"Écouter l'explication"});b.onclick=()=>speak(spoken);
+    const x=el("button",{cls:"btn link",text:"Arrêter"});x.onclick=stopSpeak;
+    out.push(el("div",{cls:"row"},[b,x]));
+  }
+  if(a){const pr=el("button",{cls:"btn line",text:"Imprimer ou montrer au guichet"});pr.onclick=()=>printOnly($("cResult"));out.push(el("div",{cls:"row"},pr))}
+  return out;
+}
+function explain(){
+  const st=$("cStatus"),out=$("cResult");
+  const txt=$("letterText").value.trim();
+  if(txt.length<20){st.hidden=false;st.textContent="Ajoute d'abord une photo ou le texte de ta lettre.";return}
+  st.hidden=true;out.replaceChildren();out.hidden=false;
+  const a=analyse(txt);
+  if(a.scam.length)out.append(el("div",{cls:"alert"},[el("p",{text:"Attention, ça ressemble peut-être à une arnaque."}),el("p",{style:"font-weight:400",text:"J'ai repéré : "+a.scam.join(" ; ")+". Ne paie rien et ne clique sur aucun lien. Vérifie en appelant l'organisme au numéro de son site officiel."})]));
+  if(a.case){
+    out.append(...fiche(a.case,a));
+    out.append(el("p",{cls:"warnline",text:"Pourquoi je pense ça : j'ai trouvé "+[a.org&&("l'expéditeur « "+a.org+" »"),a.words.length&&("les mots « "+a.words.slice(0,3).join(" », « ")+" »")].filter(Boolean).join(" et ")+". Si ce n'est pas le bon courrier, cherche le tien dans la liste plus bas."}));
+  }else{
+    out.append(el("div",{cls:"block"},[el("span",{cls:"stamp warn",text:"Pas reconnu"}),el("p",{style:"font-size:1.1rem",text:"Je ne connais pas encore ce type de courrier."+(a.org?" Il semble venir de : "+a.org+".":"")})]));
+    if(a.deadline||a.approx)out.append(el("div",{cls:"block"},[el("p",{cls:"kicker",text:"Date importante trouvée"}),el("p",{cls:"deadline"},el("span",{cls:"mark",text:a.deadline?"avant le "+fmtDate(a.deadline):"délai de "+a.delay.n+" "+a.delay.u+" (vers le "+fmtDate(a.approx)+")"}))]));
+    if(a.amounts.length)out.append(el("div",{cls:"block"},[el("p",{cls:"kicker",text:"Montants trouvés"}),el("p",{cls:"deadline",text:a.amounts.slice(0,4).join(" · ")})]));
+    out.append(el("div",{cls:"block"},[el("h3",{text:"Ce que tu peux faire"}),el("ol",{cls:"todo"},[
+      el("li",{},el("span",{text:"Regarde si ta lettre est dans la liste plus bas."})),
+      el("li",{},el("span",{text:"Montre-la dans un espace France Services ou au CCAS de ta mairie : c'est gratuit."})),
+      el("li",{},el("span",{text:"S'il y a une date limite, ne l'attends pas pour demander de l'aide."}))])]));
+  }
+  out.scrollIntoView({behavior:"smooth",block:"start"});
+}
+$("explain").onclick=explain;
+const EXAMPLE=`CAISSE D'ALLOCATIONS FAMILIALES
+Le 15/09/2026
+N° allocataire : 1234567 X
+Objet : Notification d'indu – Aide personnalisée au logement
+
+Madame, Monsieur,
+Suite au contrôle de votre dossier, il apparaît que vous avez perçu à tort la somme de 612,40 € au titre de l'aide personnalisée au logement pour la période du 01/02/2026 au 31/05/2026, en raison d'un changement de ressources non déclaré.
+Cette somme sera récupérée par retenue sur vos prestations à venir, sauf si vous procédez à son remboursement intégral.
+Vous disposez d'un délai de deux mois à compter de la réception du présent courrier pour contester cette décision auprès de la Commission de recours amiable. Vous pouvez également solliciter une remise de dette en cas de difficultés financières.
+Le directeur`;
+$("example").onclick=()=>{$("letterText").value=EXAMPLE;$("photo").value="";$("preview").hidden=true;$("ocrBox").hidden=true;explain()};
+
+/* liste des courriers connus */
+(function(){const root=$("library");
+CASES.forEach(c=>{const inner=el("div",{cls:"inner"});const d=el("details",{},[el("summary",{text:c.t}),inner]);
+d.addEventListener("toggle",()=>{if(d.open&&!inner.childNodes.length)inner.append(...fiche(c,null))});root.append(d)})})();
+
+/* ---------- MAJEUR DEMAIN ---------- */
+const STEPS=[
+ {when:"Dès 16–17 ans",title:"Tes papiers",items:[
+  ["Carte d'identité ou titre de séjour valide","Si tu es étranger·e, demande ton titre de séjour avant tes 18 ans avec ton éducateur·rice : c'est crucial."],
+  ["Acte de naissance","Gratuit, à demander en ligne ou à la mairie de naissance."],
+  ["Carte Vitale et numéro de sécurité sociale à ton nom","Crée ton compte sur ameli.fr."],
+  ["Récupérer une copie de ton dossier ASE","Tu as le droit de consulter ton dossier. Demande-le au conseil départemental."]]},
+ {when:"Avant 18 ans",title:"Ton avenir juste après",items:[
+  ["Entretien de préparation à la majorité","Le département doit te proposer un entretien vers 17 ans pour préparer ton projet. Demande-le s'il n'a pas eu lieu."],
+  ["Demander le contrat jeune majeur","Une aide du département (logement, argent, accompagnement) possible jusqu'à 21 ans. Fais la demande par écrit avant tes 18 ans."],
+  ["Prendre contact avec la Mission locale","Elle accompagne les 16–25 ans : emploi, formation, Contrat d'engagement jeune avec une allocation."],
+  ["Savoir où tu vas dormir le jour de tes 18 ans","Pistes : foyer de jeunes travailleurs (FJT), résidence CROUS, logement avec l'aide du contrat jeune majeur."]]},
+ {when:"À 18 ans",title:"Ton argent",items:[
+  ["Ouvrir un compte bancaire à ton nom","Si une banque refuse, la Banque de France peut t'en désigner une : c'est le droit au compte."],
+  ["Récupérer ton pécule","L'allocation de rentrée scolaire versée pendant ton placement a été mise de côté pour toi à la Caisse des dépôts. Demande-la à tes 18 ans."],
+  ["Créer ton compte CAF","Pour l'aide au logement (APL) et, plus tard, la prime d'activité si tu travailles."],
+  ["Demander la Complémentaire santé solidaire","Mutuelle gratuite ou presque selon tes revenus, à demander sur ameli.fr."]]},
+ {when:"Si tu fais des études",title:"Études",items:[
+  ["Dossier social étudiant sur messervices.etudiant.gouv.fr","Pour la bourse et le logement CROUS. Les anciens de l'ASE ont des droits prioritaires : signale-le."],
+  ["Garder un contact avec un adulte de confiance","Un parrain, une association d'anciens placés (ex : Repairs!), un éducateur. Ne reste pas seul·e."]]}
+];
+let checked=store.get("cdp-check",{});
+function renderCheck(){
+  const root=$("checklist");root.replaceChildren();let total=0,done=0;
+  STEPS.forEach((s,si)=>{
+    const box=el("div",{cls:"phase"},[el("h3",{},[el("span",{cls:"when",text:s.when}),s.title])]);
+    s.items.forEach(([t,h],ii)=>{
+      const id=`c${si}-${ii}`;total++;if(checked[id])done++;
+      const cb=el("input",{type:"checkbox",id});cb.checked=!!checked[id];
+      cb.onchange=()=>{checked[id]=cb.checked;store.set("cdp-check",checked);renderCheck();$(id).focus()};
+      box.append(el("div",{cls:"item"},[cb,el("label",{for:id},[t,el("small",{text:h})])]));
+    });
+    root.append(box);
+  });
+  $("bar").style.width=(100*done/total)+"%";
+  $("barTxt").textContent=`${done} sur ${total}`;
+}
+renderCheck();
+/* ---------- RESSOURCES ---------- */
+const RES=[
+ {c:"Près de chez moi",n:"France Services",d:"Des conseillers aident gratuitement pour toutes les démarches : CAF, impôts, santé, retraite, emploi. Il y en a partout en France.",w:"https://www.france-services.gouv.fr",wl:"Trouver l'espace le plus proche"},
+ {c:"Près de chez moi",n:"CCAS de ta mairie",d:"Le centre communal d'action sociale aide en cas de difficultés : aides d'urgence, dossiers, orientation. Demande à l'accueil de ta mairie."},
+ {c:"Près de chez moi",n:"Allô Service Public",d:"Pour une question sur tes droits et tes démarches.",t:"39 39",tn:"3939",x:"Service gratuit + prix d'un appel",w:"https://www.service-public.gouv.fr"},
+ {c:"Droit et justice",n:"Accès au droit (Point-justice)",d:"Des juristes répondent gratuitement à tes questions (dettes, logement, famille, travail) et t'orientent vers un Point-justice près de chez toi.",t:"30 39",tn:"3039",x:"Appel gratuit"},
+ {c:"Droit et justice",n:"Défenseur des droits",d:"Si un service public ne respecte pas tes droits, ou en cas de discrimination.",t:"09 69 39 00 00",tn:"0969390000",w:"https://www.defenseurdesdroits.fr"},
+ {c:"Logement",n:"SOS Loyers impayés",d:"Tu n'arrives plus à payer ton loyer ? Des conseillers t'aident à trouver des solutions.",t:"0 805 16 00 75",tn:"0805160075",x:"Appel gratuit"},
+ {c:"Logement",n:"ADIL de ton département",d:"Conseils gratuits sur le logement : bail, loyer, expulsion, travaux.",w:"https://www.anil.org",wl:"Trouver ton ADIL"},
+ {c:"Logement",n:"115 – Samu social",d:"Tu n'as pas d'endroit où dormir ce soir.",t:"115",tn:"115",x:"Gratuit, jour et nuit"},
+ {c:"Argent et dettes",n:"Banque de France – surendettement",d:"Tu as plusieurs dettes que tu ne peux plus payer ? Le dossier de surendettement est gratuit.",t:"34 14",tn:"3414",w:"https://www.banque-france.fr"},
+ {c:"Argent et dettes",n:"Médiateur national de l'énergie",d:"Litige ou facture d'électricité ou de gaz, chèque énergie.",t:"0 800 112 212",tn:"0800112212",x:"Appel gratuit",w:"https://www.energie-info.fr"},
+ {c:"Arnaques",n:"Info Escroqueries",d:"Tu penses être victime d'une arnaque, ou tu as un doute sur un message.",t:"0 805 805 817",tn:"0805805817",x:"Appel gratuit"},
+ {c:"Arnaques",n:"33700",d:"Transfère à ce numéro les SMS d'arnaque que tu reçois pour les signaler.",t:"33700",tn:"33700"},
+ {c:"Arnaques",n:"Cybermalveillance.gouv.fr",d:"Aide en cas de piratage, de faux site ou d'arnaque en ligne.",w:"https://www.cybermalveillance.gouv.fr"},
+ {c:"Organismes",n:"CAF",d:"Aides au logement, RSA, prime d'activité, allocations familiales.",t:"32 30",tn:"3230",x:"Service gratuit + prix d'un appel",w:"https://www.caf.fr"},
+ {c:"Organismes",n:"Assurance maladie",d:"Remboursements, carte Vitale, Complémentaire santé solidaire.",t:"36 46",tn:"3646",x:"Service gratuit + prix d'un appel",w:"https://www.ameli.fr"},
+ {c:"Organismes",n:"France Travail",d:"Inscription, allocations chômage, rendez-vous.",t:"39 49",tn:"3949",w:"https://www.francetravail.fr"},
+ {c:"Organismes",n:"Impôts",d:"Questions sur ta déclaration ou tes paiements.",t:"0 809 401 401",tn:"0809401401",x:"Service gratuit + prix d'un appel",w:"https://www.impots.gouv.fr"},
+ {c:"Organismes",n:"Amendes",d:"Le seul site officiel pour payer ou contester une amende.",w:"https://www.amendes.gouv.fr"},
+ {c:"Jeunes et sortie de l'ASE",n:"Mission locale",d:"Accompagne les 16–25 ans : emploi, formation, logement, Contrat d'engagement jeune.",w:"https://www.1jeune1solution.gouv.fr",wl:"Trouver ta Mission locale"},
+ {c:"Jeunes et sortie de l'ASE",n:"Repairs! 75",d:"Entraide entre jeunes et anciens de l'aide sociale à l'enfance.",t:"07 66 08 66 61",tn:"0766086661",m:"contact@repairs75.org",w:"https://www.repairs75.org"},
+ {c:"Jeunes et sortie de l'ASE",n:"Fil Santé Jeunes",d:"Pour parler de santé, de moral, de sexualité, anonymement.",t:"0 800 235 236",tn:"0800235236",x:"Appel gratuit"},
+ {c:"Jeunes et sortie de l'ASE",n:"119 – Allô enfance en danger",d:"Pour un enfant ou un jeune en danger, ou si tu as besoin de parler.",t:"119",tn:"119",x:"Gratuit, jour et nuit"},
+ {c:"Associations",n:"Emmaüs Connect",d:"Aide pour s'équiper et apprendre à utiliser le numérique.",t:"01 80 05 98 80",tn:"0180059880",m:"standard@emmaus-connect.org",w:"https://emmaus-connect.org"},
+ {c:"Associations",n:"La Cimade",d:"Aide aux personnes étrangères : titre de séjour, recours, droit d'asile.",w:"https://www.lacimade.org",wl:"Trouver une permanence"},
+ {c:"Associations",n:"Les Restos du Cœur",d:"Aide alimentaire et accompagnement.",w:"https://www.restosducoeur.org"},
+ {c:"Associations",n:"Secours populaire",d:"Aide alimentaire, vacances, accès aux droits.",w:"https://www.secourspopulaire.fr"},
+ {c:"Associations",n:"Secours catholique",d:"Accueil, accompagnement, aide dans les démarches.",w:"https://www.secours-catholique.org"},
+ {c:"Associations",n:"Croix-Rouge française",d:"Aide d'urgence, écoute, accompagnement.",w:"https://www.croix-rouge.fr"},
+ {c:"Urgence",n:"Urgences",d:"15 : SAMU · 17 : police · 18 : pompiers · 112 : numéro européen · 114 : par SMS, pour les personnes sourdes ou malentendantes.",t:"112",tn:"112"},
+ {c:"Urgence",n:"3919 – Violences femmes info",d:"Écoute et conseils pour les femmes victimes de violences.",t:"39 19",tn:"3919",x:"Gratuit et anonyme"},
+ {c:"Urgence",n:"3114 – Prévention du suicide",d:"Si tu penses au suicide ou si tu t'inquiètes pour quelqu'un.",t:"31 14",tn:"3114",x:"Gratuit, jour et nuit"}
+];
+(function(){
+  const cats=["Tout",...new Set(RES.map(r=>r.c))];let cur="Tout",q="";
+  const chips=$("resCats"),list=$("resList");
+  cats.forEach(c=>{const b=el("button",{cls:"chipbtn",text:c,"aria-pressed":c===cur?"true":"false"});b.onclick=()=>{cur=c;chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x.textContent===c?"true":"false"));draw()};chips.append(b)});
+  $("resQ").oninput=e=>{q=e.target.value.trim().toLowerCase();draw()};
+  function draw(){
+    list.replaceChildren();
+    const norm=s=>s.toLowerCase().normalize("NFD").replace(/\p{M}/gu,"");
+    const items=RES.filter(r=>(cur==="Tout"||r.c===cur)&&(!q||norm(r.n+" "+r.d+" "+r.c).includes(norm(q))));
+    if(!items.length){list.append(el("p",{cls:"status",text:"Rien trouvé. Essaie un autre mot, ou va dans un espace France Services."}));return}
+    let last=null;
+    items.forEach(r=>{
+      if(cur==="Tout"&&r.c!==last){list.append(el("h3",{cls:"rescat",text:r.c}));last=r.c}
+      const links=el("div",{cls:"row"});
+      if(r.t)links.append(el("a",{cls:"btn",href:"tel:"+r.tn,text:"Appeler le "+r.t}));
+      if(r.m)links.append(el("a",{cls:"btn line",href:"mailto:"+r.m,text:"Écrire : "+r.m}));
+      if(r.w)links.append(el("a",{cls:"btn link",href:r.w,target:"_blank",rel:"noopener",text:(r.wl||"Site internet")+" ↗"}));
+      list.append(el("article",{cls:"res"},[el("h4",{text:r.n}),el("p",{text:r.d}),r.x?el("p",{cls:"small",text:r.x}):null,links]));
+    });
+  }
+  draw();
+})();
+
+/* ---------- ARNAQUE OU PAS ---------- */
+const SCAM2=[...SCAM,
+ [/colis|livraison|chronopost|colissimo|la poste|dhl|ups/i,"une histoire de colis en attente (arnaque très fréquente)"],
+ [/(frais|droits) de (douane|r[ée]exp[ée]dition|livraison)|1[,.]99|2[,.]99/i,"une petite somme à payer pour débloquer quelque chose"],
+ [/carte vitale.*(expir|renouvel)|renouvel.*carte vitale/i,"un faux renouvellement de carte Vitale (la carte Vitale ne se renouvelle pas par SMS)"],
+ [/\bcpf\b|compte (personnel de )?formation/i,"une offre liée au CPF (souvent frauduleuse par téléphone ou SMS)"],
+ [/remboursement (en attente|disponible)|vous avez droit [àa] un remboursement|trop per[çc]u en votre faveur/i,"un faux remboursement qui t'attend"],
+ [/conseiller bancaire|service (fraude|s[ée]curit[ée]) de (votre )?banque|op[ée]ration suspecte|annuler (le|un) virement/i,"un faux conseiller bancaire (ta banque ne te demande jamais de valider une opération pour « l'annuler »)"],
+ [/maman|papa/i,"un message « Coucou maman/papa, j'ai changé de numéro » (arnaque connue)"],
+ [/vous avez gagn[ée]|gagnant|loterie|h[ée]ritage/i,"un gain ou un héritage inattendu"],
+ [/cryptomonnaie|bitcoin|investissement garanti|rendement/i,"une promesse d'argent facile ou de placement miracle"]
+];
+function scamCheck(){
+  const t=$("scamIn").value.trim(),out=$("scamOut");out.hidden=false;out.replaceChildren();
+  if(t.length<8){out.append(el("p",{cls:"status",text:"Colle d'abord le message reçu."}));return}
+  const hits=SCAM2.filter(([re])=>re.test(t)).map(([,w])=>w);
+  const lvl=hits.length>=2?"bad":hits.length===1?"warn":"ok";
+  const lab={bad:"Très suspect",warn:"Suspect",ok:"Aucun signe évident"}[lvl];
+  out.append(el("span",{cls:"stamp "+lvl,text:lab}));
+  if(hits.length){
+    const ul=el("ol",{cls:"todo"});hits.forEach(h=>ul.append(el("li",{},el("span",{text:h}))));
+    out.append(el("div",{cls:"block"},[el("h3",{text:"Ce que j'ai repéré"}),ul]));
+    out.append(el("div",{cls:"block"},[el("h3",{text:"Ce qu'il faut faire"}),el("ol",{cls:"todo"},[
+      el("li",{},el("span",{text:"Ne réponds pas, ne clique sur aucun lien, ne paie rien."})),
+      el("li",{},el("span",{text:"Si c'est un SMS : transfère-le gratuitement au 33700 pour le signaler, puis supprime-le."})),
+      el("li",{},el("span",{text:"Tu as déjà donné ta carte bancaire ? Appelle tout de suite ta banque, ou le 0 892 705 705 pour faire opposition."})),
+      el("li",{},el("span",{text:"Pour être conseillé·e : Info Escroqueries, 0 805 805 817 (gratuit)."}))])]));
+  }else{
+    out.append(el("p",{text:"Je n'ai pas trouvé les signes d'arnaque habituels. Ça ne veut pas dire que le message est sûr : en cas de doute, appelle l'organisme au numéro de son site officiel, jamais au numéro donné dans le message."}));
+  }
+}
+$("scamGo").onclick=scamCheck;
+$("scamEx").onclick=()=>{$("scamIn").value="Votre colis est en attente de livraison. Des frais de 1,99 € sont à régler sous 24h : https://suivi-colis-fr.info/paiement";scamCheck()};
+
+/* ---------- ÉCRIRE UNE LETTRE ---------- */
+const F={nom:["Prénom et nom",""],adresse:["Ton adresse",""],org:["À qui tu écris (organisme)",""],ref:["Ton numéro (allocataire, fiscal, client…)",""],montant:["Montant concerné (en €)",""],date:["Date du courrier reçu",""],raison:["Explique en une ou deux phrases",""],mensualites:["En combien de fois tu peux payer",""],contrat:["Contrat ou abonnement concerné",""],dossier:["Quel dossier tu veux récupérer",""]};
+const LT=[
+ {id:"remise",t:"Demander une remise de dette",f:["nom","adresse","org","ref","montant","date","raison"],tip:"Joins si possible des justificatifs de tes difficultés (revenus, charges). Envoie la lettre en recommandé ou par la messagerie de ton espace en ligne.",
+  b:v=>`Objet : Demande de remise de dette${v.montant?" – "+v.montant+" €":""}\nRéférence : ${v.ref||"[ton numéro]"}\n\nMadame, Monsieur,\n\nPar courrier${v.date?" du "+v.date:""}, vous me réclamez la somme de ${v.montant?v.montant+" €":"[montant] €"}.\n\nJe traverse actuellement des difficultés financières : ${v.raison||"[explique ta situation]"}.\n\nJe ne suis pas en mesure de rembourser cette somme. Je vous demande donc de bien vouloir m'accorder une remise totale ou partielle de cette dette.\n\nJe vous joins les justificatifs de ma situation.\n\nJe vous prie d'agréer, Madame, Monsieur, mes salutations distinguées.`},
+ {id:"delai",t:"Demander un délai de paiement",f:["nom","adresse","org","ref","montant","mensualites","raison"],tip:"Propose un montant par mois que tu peux vraiment payer. Garde une copie de ta lettre.",
+  b:v=>`Objet : Demande d'échéancier${v.montant?" – "+v.montant+" €":""}\nRéférence : ${v.ref||"[ton numéro]"}\n\nMadame, Monsieur,\n\nJe vous dois la somme de ${v.montant?v.montant+" €":"[montant] €"}. ${v.raison||"[Explique pourquoi tu ne peux pas tout payer d'un coup.]"}\n\nJe vous propose de régler cette somme en ${v.mensualites||"[nombre]"} mensualités${v.montant&&+v.mensualites?" d'environ "+(Math.ceil(parseFloat(v.montant.replace(",","."))/+v.mensualites*100)/100).toFixed(2).replace(".",",")+" €":""}.\n\nMerci de me confirmer votre accord par écrit.\n\nJe vous prie d'agréer, Madame, Monsieur, mes salutations distinguées.`},
+ {id:"contester",t:"Contester une décision (recours gracieux)",f:["nom","adresse","org","ref","date","raison"],tip:"Respecte le délai indiqué sur la décision (souvent 2 mois). Joins toutes les preuves qui vont dans ton sens.",
+  b:v=>`Objet : Recours contre la décision${v.date?" du "+v.date:""}\nRéférence : ${v.ref||"[ton numéro]"}\n\nMadame, Monsieur,\n\nJe conteste la décision que vous m'avez adressée${v.date?" le "+v.date:""}.\n\nEn effet, ${v.raison||"[explique pourquoi la décision n'est pas juste]"}.\n\nJe vous demande de bien vouloir réexaminer ma situation et revenir sur cette décision. Vous trouverez ci-joint les documents qui le justifient.\n\nJe vous prie d'agréer, Madame, Monsieur, mes salutations distinguées.`},
+ {id:"resilier",t:"Résilier un abonnement ou un contrat",f:["nom","adresse","org","ref","contrat"],tip:"Beaucoup d'abonnements se résilient aussi en ligne, avec un bouton « Résilier » obligatoire. Garde la preuve de ta demande.",
+  b:v=>`Objet : Résiliation de mon contrat${v.contrat?" – "+v.contrat:""}\nN° client : ${v.ref||"[ton numéro client]"}\n\nMadame, Monsieur,\n\nPar la présente, je vous informe de ma décision de résilier mon contrat${v.contrat?" « "+v.contrat+" »":""}.\n\nMerci de prendre en compte cette résiliation dans les délais prévus, de m'en envoyer la confirmation écrite, et de cesser tout prélèvement à partir de sa date d'effet.\n\nJe vous prie d'agréer, Madame, Monsieur, mes salutations distinguées.`},
+ {id:"copie",t:"Demander une copie de mon dossier",f:["nom","adresse","org","ref","dossier"],tip:"Tu as le droit de demander les informations qu'un organisme a sur toi. Pour un dossier de l'aide sociale à l'enfance, écris au conseil départemental.",
+  b:v=>`Objet : Demande de communication de mon dossier\nRéférence : ${v.ref||"[ton numéro, si tu en as un]"}\n\nMadame, Monsieur,\n\nJe souhaite obtenir une copie de ${v.dossier||"[précise le dossier : dossier ASE, dossier allocataire, etc.]"} me concernant, ainsi que de l'ensemble des informations personnelles que vous détenez à mon sujet.\n\nJe vous remercie de me l'adresser à l'adresse ci-dessus, ou de m'indiquer les modalités pour le consulter.\n\nJe vous prie d'agréer, Madame, Monsieur, mes salutations distinguées.`}
+];
+let lVals=store.get("cdp-lettre",{});
+LT.forEach(x=>$("lType").append(el("option",{value:x.id,text:x.t})));
+function lRender(){
+  const x=LT.find(y=>y.id===$("lType").value)||LT[0];
+  const box=$("lFields");box.replaceChildren();
+  x.f.forEach(k=>{const id="lf-"+k;const inp=k==="raison"?el("textarea",{id,style:"min-height:90px"}):el("input",{type:"text",id,inputmode:["montant","mensualites"].includes(k)?"decimal":"text"});inp.value=lVals[k]||"";inp.oninput=()=>{lVals[k]=inp.value;store.set("cdp-lettre",lVals);lDraw()};box.append(el("div",{cls:"field",style:k==="raison"?"grid-column:1/-1":""},[el("label",{for:id,text:F[k][0]}),inp]))});
+  $("lTip").textContent=x.tip;lDraw();
+}
+function lDraw(){
+  const x=LT.find(y=>y.id===$("lType").value)||LT[0];const v={};x.f.forEach(k=>v[k]=(lVals[k]||"").trim());
+  const today=new Date().toLocaleDateString("fr-FR");
+  $("lOut").textContent=`${v.nom||"[Prénom Nom]"}\n${v.adresse||"[Ton adresse]"}\n\n${v.org||"[Organisme]"}\n\nLe ${today}\n\n${x.b(v)}\n\n${v.nom||"[Prénom Nom]"}\n[Signature]`;
+}
+$("lType").onchange=lRender;
+$("lCopy").onclick=()=>{const b=$("lCopy");navigator.clipboard.writeText($("lOut").textContent).then(()=>b.textContent="Copiée ✓",()=>b.textContent="Sélectionne le texte pour le copier")};
+$("lPrint").onclick=()=>printOnly($("lOut"));
+lRender();
+
+/* ---------- IMPRIMER ---------- */
+function printOnly(node){
+  document.querySelectorAll(".print-me").forEach(n=>n.classList.remove("print-me"));
+  node.classList.add("print-me");document.body.classList.add("printing");
+  window.print();
+  setTimeout(()=>{document.body.classList.remove("printing");node.classList.remove("print-me")},500);
+}
+
+/* ---------- GLOSSAIRE ---------- */
+const GLO=[
+ ["Allocataire","Personne qui reçoit des aides de la CAF."],["Arrêté","Décision officielle écrite d'une autorité (préfet, maire…)."],["Assignation","Document qui t'oblige à te présenter devant un tribunal à une date précise."],
+ ["Astreinte","Somme à payer par jour de retard si on ne fait pas ce que le juge a ordonné."],["Avis d'imposition","Document qui résume tes impôts de l'année et sert de justificatif de revenus."],["Ayant droit","Personne qui bénéficie des droits d'une autre (par exemple un enfant sur la carte Vitale d'un parent)."],
+ ["Bailleur","Le propriétaire du logement que tu loues."],["Caution","Personne qui s'engage à payer à ta place si tu ne paies pas. Ou argent versé en garantie (dépôt de garantie)."],["Clause résolutoire","Règle du bail qui permet d'y mettre fin si le loyer n'est pas payé."],
+ ["Commandement de payer","Lettre officielle, remise par un commissaire de justice, qui exige le paiement d'une dette dans un délai précis."],["Commissaire de justice","Nouveau nom de l'huissier. Il remet des actes officiels et peut faire des saisies avec une décision de justice."],["Contentieux","Litige, désaccord porté devant une autorité ou un juge."],
+ ["Créancier","La personne ou l'entreprise à qui tu dois de l'argent."],["Débiteur","La personne qui doit de l'argent."],["Délai de recours","Temps dont tu disposes pour contester une décision. Passé ce délai, c'est souvent trop tard."],
+ ["Échéancier","Accord pour payer une dette en plusieurs fois."],["Exécutoire","Se dit d'une décision qui peut être appliquée tout de suite, même par la force."],["Forclusion","Perte d'un droit parce qu'on a dépassé le délai pour agir."],
+ ["Huissier","Ancien nom du commissaire de justice."],["Indu","Somme que tu as reçue alors que tu n'y avais pas droit, et qu'on te demande de rembourser."],["Injonction de payer","Décision d'un juge qui t'ordonne de payer une dette. Tu peux t'y opposer dans un délai d'un mois."],
+ ["Mainlevée","Fin d'une saisie ou d'une mesure qui bloquait quelque chose."],["Majoration","Somme ajoutée en pénalité parce qu'un paiement est en retard."],["Mise en demeure","Lettre qui te demande officiellement de faire quelque chose (souvent payer) avant d'aller plus loin."],
+ ["Notification","Le fait de t'informer officiellement d'une décision. C'est souvent à partir de là que le délai commence."],["Opposition","Recours pour contester une décision prise sans que tu aies été entendu·e."],["Pièce justificative","Document qui prouve ce que tu déclares (bulletin de salaire, bail, facture…)."],
+ ["Prescription","Délai au-delà duquel une dette ne peut plus être réclamée."],["Prestation","Aide versée par un organisme (CAF, Sécurité sociale…)."],["Quotient familial","Calcul qui tient compte de tes revenus et de la taille de ta famille pour fixer tes impôts ou certains tarifs."],
+ ["Radiation","Le fait d'être retiré d'une liste (par exemple de France Travail)."],["Recours gracieux","Demande écrite à l'organisme qui a pris une décision pour qu'il la change."],["Recours contentieux","Contestation d'une décision devant un juge."],
+ ["Recouvrement","Démarches pour récupérer une dette."],["Récépissé","Document qui prouve que tu as déposé une demande."],["Remise de dette","Annulation de tout ou partie d'une dette, souvent pour raisons financières."],
+ ["Revenu fiscal de référence","Chiffre de ton avis d'impôt qui sert à calculer beaucoup d'aides."],["Saisie","Prise d'argent ou de biens pour payer une dette, avec une décision de justice ou de l'administration."],["Signification","Remise officielle d'un document par un commissaire de justice. Elle fait souvent démarrer un délai."],
+ ["Solde bancaire insaisissable","Somme minimum (égale au RSA pour une personne seule) que la banque doit te laisser même en cas de saisie."],["Surendettement","Situation où l'on ne peut plus payer ses dettes. On peut déposer un dossier gratuit à la Banque de France."],["Trêve hivernale","Période du 1er novembre au 31 mars pendant laquelle les expulsions et les coupures d'énergie sont en principe interdites."]
+];
+(function(){
+  const list=$("gloList"),norm=s=>s.toLowerCase().normalize("NFD").replace(/\p{M}/gu,"");
+  function draw(q){list.replaceChildren();GLO.filter(([w,d])=>!q||norm(w+" "+d).includes(norm(q))).forEach(([w,d])=>list.append(el("div",{cls:"glo"},[el("dt",{text:w}),el("dd",{text:d})])));if(!list.childNodes.length)list.append(el("p",{cls:"status",text:"Mot pas encore dans le dico. Écris-nous pour qu'on l'ajoute."}))}
+  $("gloQ").oninput=e=>draw(e.target.value.trim());draw("");
+})();
+
+/* ---------- LIRE MA LETTRE À VOIX HAUTE ---------- */
+if(canSpeak){$("readLetter").hidden=false;$("readLetter").onclick=()=>{const t=$("letterText").value.trim();if(t)speak(t)}}
+
+/* ---------- CONFIANCE : hors ligne + tout effacer ---------- */
+function net(){$("offline").hidden=navigator.onLine}
+addEventListener("online",net);addEventListener("offline",net);net();
+$("wipe").onclick=()=>{
+  if($("wipe").dataset.sure!=="1"){$("wipe").dataset.sure="1";$("wipe").textContent="Clique encore pour confirmer";return}
+  try{localStorage.clear();sessionStorage.clear()}catch{}
+  try{indexedDB.databases&&indexedDB.databases().then(d=>d.forEach(x=>indexedDB.deleteDatabase(x.name)))}catch{}
+  document.querySelectorAll("textarea,input[type=text],input[type=number]").forEach(i=>i.value="");
+  $("wipe").textContent="Tout est effacé ✓";$("wipe").dataset.sure="";
+};
+
+</script>
+</body>
+</html>
