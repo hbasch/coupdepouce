@@ -440,6 +440,7 @@ document.querySelectorAll(".tab").forEach(b=>{
 });
 const fromHash=location.hash.slice(1);
 openTool(TOOLS.includes(fromHash)?fromHash:store.get("cdp-tool","courrier"));
+addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(TOOLS.includes(h))openTool(h)});
 
 /* taille du texte */
 function setFs(v){document.documentElement.style.setProperty("--fs",v+"px");document.querySelectorAll(".sizes button").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.fs===v));store.set("cdp-fs2",v)}
@@ -469,12 +470,12 @@ const ORGS=[
  ["Bailleur",/bailleur|propri[ée]taire|loyer/i]
 ];
 const CASES=[
- {id:"caf-indu",a:["Le courrier de la CAF", "Ton numéro d'allocataire", "Tes justificatifs de revenus des mois concernés"],t:"CAF : trop-perçu (indu)",org:"CAF",g:"a_traiter",m:[/\bindu\b|trop[- ]per[çc]u|per[çc]u [àa] tort|sommes ind[uû]ment/i],
+ {id:"caf-indu",a:["Le courrier de la CAF", "Ton numéro d'allocataire", "Tes justificatifs de revenus des mois concernés"],t:"CAF : trop-perçu (indu)",org:"CAF",g:"a_traiter",m:[/(?:^|[^a-z])l?['’]?indu\b|trop[- ]per[çc]u|[àa] tort|ind[uû]ment|notification de dette/i],
   r:"La CAF pense t'avoir versé trop d'argent et veut le récupérer, le plus souvent en baissant tes prochaines aides.",
   f:["Vérifie la période et le montant : est-ce qu'ils correspondent à un vrai changement (travail, déménagement, vie en couple) ?","Tu n'es pas d'accord ? Écris à la Commission de recours amiable de ta CAF dans les 2 mois.","Tu es d'accord mais tu ne peux pas payer ? Demande une remise de dette ou un échéancier (sur caf.fr ou par courrier)."],
   h:"Accueil CAF, France Services, CCAS, assistante sociale.",
   l:"Objet : Contestation de la notification d'indu{MONTANT_OBJ}\nN° allocataire : [ton numéro]\n\nMadame, Monsieur,\n\nJe conteste la décision de récupération d'un indu{MONTANT_TXT} que j'ai reçue{DATE_TXT}.\n\n[Explique en deux ou trois phrases pourquoi tu n'es pas d'accord.]\n\nJe vous demande de réexaminer ma situation. À titre subsidiaire, compte tenu de mes difficultés financières, je sollicite une remise de dette ou un échéancier de remboursement.\n\nJe vous prie d'agréer, Madame, Monsieur, mes salutations distinguées.\n\n[Prénom Nom]\n[Adresse]\n[Signature]"},
- {id:"caf-pieces",a:["Le courrier de la CAF", "Les documents demandés", "Ton numéro d'allocataire"],t:"CAF : demande de justificatifs",org:"CAF",g:"a_traiter",m:[/pi[èe]ces? justificatives?|justificatifs?|documents? manquants?|nous retourner|compl[ée]ter votre dossier/i],
+ {id:"caf-pieces",p:-1,a:["Le courrier de la CAF", "Les documents demandés", "Ton numéro d'allocataire"],t:"CAF : demande de justificatifs",org:"CAF",g:"a_traiter",m:[/pi[èe]ces? justificatives?|justificatifs?|documents? manquants?|nous retourner|compl[ée]ter votre dossier/i],
   r:"La CAF a besoin d'un ou plusieurs documents pour étudier ou continuer tes droits. Sans réponse, tes aides peuvent être suspendues.",
   f:["Repère la liste des documents demandés et la date limite.","Envoie-les depuis ton espace sur caf.fr (Mon compte > Envoyer un document) ou par courrier.","Garde une copie de ce que tu envoies."],
   h:"Accueil CAF, France Services."},
@@ -495,11 +496,11 @@ const CASES=[
   f:["Vérifie le montant et l'impôt concerné (revenu, taxe foncière…).","Si tu ne peux pas tout payer, demande un délai de paiement par la messagerie sur impots.gouv.fr.","En cas de grosses difficultés, tu peux demander une remise gracieuse de la majoration."],
   h:"Centre des finances publiques, France Services, Point-justice.",
   l:"Objet : Demande de délai de paiement{MONTANT_OBJ}\nN° fiscal : [ton numéro fiscal]\n\nMadame, Monsieur,\n\nJ'ai reçu{DATE_TXT} une relance concernant un montant{MONTANT_TXT} restant à payer.\n\nEn raison de difficultés financières [explique brièvement], je ne suis pas en mesure de régler cette somme en une seule fois. Je vous propose de la payer en [nombre] mensualités de [montant] €.\n\nJe sollicite également, si possible, la remise gracieuse de la majoration.\n\nJe vous prie d'agréer, Madame, Monsieur, mes salutations distinguées.\n\n[Prénom Nom]\n[Adresse]"},
- {id:"cpam-pieces",a:["Le courrier", "Ta carte Vitale", "Les documents demandés"],t:"Assurance maladie : demande de documents ou fin de droits",org:"Assurance maladie",g:"a_traiter",m:[/pi[èe]ces?|justificatifs?|fin de (vos )?droits|compl[ée]mentaire sant[ée] solidaire|carte vitale|renouvellement/i],
+ {id:"cpam-pieces",p:-1,a:["Le courrier", "Ta carte Vitale", "Les documents demandés"],t:"Assurance maladie : demande de documents ou fin de droits",org:"Assurance maladie",g:"a_traiter",m:[/pi[èe]ces?|justificatifs?|fin de (vos )?droits|compl[ée]mentaire sant[ée] solidaire|carte vitale|renouvellement/i],
   r:"La Sécurité sociale a besoin d'un document, ou t'informe que des droits (par exemple la Complémentaire santé solidaire) vont s'arrêter.",
   f:["Envoie le document demandé depuis ton compte ameli.fr (Messagerie).","Pour la Complémentaire santé solidaire, fais la demande de renouvellement sur ameli.fr avant la date indiquée."],
   h:"Accueil CPAM, France Services, CCAS."},
- {id:"ft-convocation",a:["La convocation", "Ton identifiant France Travail", "Ton CV à jour"],t:"France Travail : convocation",org:"France Travail",g:"a_traiter",m:[/convocation|convoqu[ée]|rendez-vous|entretien/i],
+ {id:"ft-convocation",p:-1,a:["La convocation", "Ton identifiant France Travail", "Ton CV à jour"],t:"France Travail : convocation",org:"France Travail",g:"a_traiter",m:[/convocation|convoqu[ée]|rendez-vous|entretien/i],
   r:"France Travail te donne rendez-vous. Si tu ne viens pas sans prévenir, tes allocations peuvent être réduites ou suspendues.",
   f:["Note la date, l'heure et le lieu.","Si tu ne peux pas venir, préviens AVANT, depuis ton espace francetravail.fr, avec un justificatif si possible."],
   h:"Ton conseiller France Travail, la Mission locale (moins de 26 ans), France Services."},
@@ -537,7 +538,7 @@ const CASES=[
   r:"C'est la preuve que ta demande de titre de séjour est en cours. Il te permet souvent de rester en France (et parfois de travailler) pendant l'examen.",
   f:["Vérifie la date de fin de validité.","Garde-le toujours sur toi avec ton passeport.","Avant la date de fin, pense à demander un renouvellement si tu n'as pas encore de réponse."],
   h:"La Cimade, associations d'aide aux personnes étrangères, France Services."},
- {id:"pref-oqtf",a:["La décision de la préfecture et son enveloppe", "Ton passeport", "Toutes tes preuves de présence en France (factures, bulletins de salaire, attestations)"],free:1,t:"Préfecture : refus de titre ou obligation de quitter le territoire (OQTF)",org:"Préfecture",g:"urgent",m:[/obligation de quitter|\boqtf\b|refus de (titre|s[ée]jour|d[ée]livrance)|refus de renouvellement/i],
+ {id:"pref-oqtf",a:["La décision de la préfecture et son enveloppe", "Ton passeport", "Toutes tes preuves de présence en France (factures, bulletins de salaire, attestations)"],free:1,t:"Préfecture : refus de titre ou obligation de quitter le territoire (OQTF)",org:"Préfecture",g:"urgent",m:[/obligation de qui|\boqtf\b|quitter le territoire|territoire fran[çc]ais|refus de (titre|s[ée]jour|d[ée]livrance)|refus de renouvellement|pays de destination/i],
   r:"La préfecture refuse ton titre de séjour et peut te demander de quitter la France. Tu peux faire un recours, mais les délais sont très courts : souvent 30 jours, parfois 15 jours ou même 48 heures.",
   f:["Regarde TOUT DE SUITE le délai de recours écrit sur la décision.","Contacte immédiatement une association spécialisée ou un avocat.","Garde toutes tes preuves de présence et d'insertion en France (bulletins de salaire, attestations, factures)."],
   h:"La Cimade, associations d'aide aux étrangers, Point-justice, avocat (aide juridictionnelle possible)."},
@@ -546,7 +547,7 @@ const CASES=[
   f:["Appelle ton fournisseur pour demander un échéancier.","Utilise ton chèque énergie si tu en as un.","Demande une aide au Fonds de solidarité logement (FSL) auprès du CCAS.","Pendant la trêve hivernale (1er novembre – 31 mars), les coupures sont en principe interdites (la puissance peut être réduite)."],
   h:"CCAS, assistante sociale, médiateur national de l'énergie.",
   l:"Objet : Demande d'échéancier{MONTANT_OBJ}\nN° client : [ton numéro client]\n\nMadame, Monsieur,\n\nJ'ai reçu{DATE_TXT} un courrier concernant une facture impayée{MONTANT_TXT}.\n\nEn raison de difficultés financières, je vous demande de bien vouloir m'accorder un échéancier de [nombre] mois, et de ne pas suspendre ma fourniture pendant ce temps.\n\nJe vous prie d'agréer, Madame, Monsieur, mes salutations distinguées.\n\n[Prénom Nom]\n[Adresse]"},
- {id:"amende",a:["L'avis de contravention", "Ta carte grise"],free:1,t:"Amende : avis de contravention",org:"ANTAI (amendes)",g:"a_traiter",m:[/avis de contravention|amende forfaitaire(?! major)|avis de paiement|\bamende\b/i],
+ {id:"amende",a:["L'avis de contravention", "Ta carte grise"],free:1,t:"Amende : avis de contravention",org:"ANTAI (amendes)",g:"a_traiter",m:[/avis de contravention|\bcontravention\b|amende forfaitaire(?! major)|avis de paiement|\bamende\b|\bantai\b|traitement automatis[ée] des infractions/i],
   r:"Tu as reçu une amende (souvent un excès de vitesse ou un stationnement). Le montant baisse si tu payes vite, et augmente si tu attends trop.",
   f:["Payer : sur amendes.gouv.fr, par téléphone ou par timbre. Payer dans les 15 jours donne souvent un montant minoré.","Ce n'était pas toi au volant ? Désigne le conducteur ou conteste sur antai.gouv.fr, en général sous 45 jours.","Méfie-toi des SMS qui demandent de payer une amende par un lien : ce sont souvent des arnaques. Le seul site officiel est amendes.gouv.fr."],
   h:"France Services, Point-justice."},
@@ -558,12 +559,28 @@ const CASES=[
 /* Signes d'arnaque */
 const SCAM=[
  [/carte[s]? cadeau|coupon (pcs|transcash|neosurf)|\bpcs\b|transcash|neosurf|paysafecard/i,"paiement par carte cadeau ou coupon (aucune administration ne demande ça)"],
- [/bit\.ly|tinyurl|https?:\/\/(?![^\s]*\.gouv\.fr)[^\s]+/i,"un lien internet qui n'est pas un site officiel en .gouv.fr"],
+ [/bit\.ly|tinyurl|https?:\/\/(?!(?:[\w-]+\.)*(?:gouv\.fr|caf\.fr|ameli\.fr|francetravail\.fr|pole-emploi\.fr|service-public\.fr|urssaf\.fr|msa\.fr|lassuranceretraite\.fr|info-retraite\.fr|laposte\.fr|edf\.fr|engie\.fr|totalenergies\.fr)(?:[\/:?#\s]|$))\S+/i,"un lien internet qui ne mène pas vers un site officiel"],
  [/cliquez|cliquer (ici|sur le lien)/i,"on te demande de cliquer sur un lien"],
  [/(sous|dans les) (24|48) ?h(eures)?|imm[ée]diatement sinon|compte (sera )?bloqu[ée]|dernier avis avant/i,"une urgence exagérée pour te faire paniquer"],
  [/code (de )?(confirmation|v[ée]rification) re[çc]u par sms|mot de passe|coordonn[ée]es bancaires|num[ée]ro de carte/i,"on te demande un code, un mot de passe ou ta carte bancaire"]
 ];
 
+/* nettoyage de la photo avant lecture : agrandir, niveaux de gris, contraste */
+async function prepareImage(file){
+  try{
+    const bmp=await createImageBitmap(file,{imageOrientation:"from-image"});
+    const target=2200,scale=Math.min(3,Math.max(1,target/Math.max(bmp.width,bmp.height)));
+    const c=document.createElement("canvas");c.width=Math.round(bmp.width*scale);c.height=Math.round(bmp.height*scale);
+    const x=c.getContext("2d",{willReadFrequently:true});x.imageSmoothingQuality="high";x.drawImage(bmp,0,0,c.width,c.height);
+    const d=x.getImageData(0,0,c.width,c.height),p=d.data,hist=new Uint32Array(256);
+    for(let i=0;i<p.length;i+=4){const g=(p[i]*299+p[i+1]*587+p[i+2]*114)/1000|0;p[i]=g;hist[g]++}
+    let tot=p.length/4,lo=0,hi=255,acc=0;for(;lo<255&&(acc+=hist[lo])<tot*.02;lo++);acc=0;for(;hi>0&&(acc+=hist[hi])<tot*.02;hi--);
+    const k=255/Math.max(1,hi-lo);
+    for(let i=0;i<p.length;i+=4){let v=(p[i]-lo)*k;v=v<0?0:v>255?255:v;p[i]=p[i+1]=p[i+2]=v}
+    x.putImageData(d,0,0);
+    return await new Promise(r=>c.toBlob(b=>r(b||file),"image/png"));
+  }catch{return file}
+}
 /* lecture de la photo sur l'appareil */
 let ocrWorker=null;
 async function getOcr(onProg){
@@ -582,7 +599,8 @@ $("photo").addEventListener("change",async e=>{
   t.textContent="Préparation de la lecture (la première fois, environ 20 secondes)…";
   try{
     const w=await getOcr(m=>{if(m.status==="recognizing text"){bar.style.width=Math.round(10+m.progress*90)+"%";t.textContent="Lecture de ta lettre… "+Math.round(m.progress*100)+" %"}});
-    const {data}=await w.recognize(f);bar.style.width="100%";
+    const img=await prepareImage(f);
+    const {data}=await w.recognize(img,{rotateAuto:true});bar.style.width="100%";
     const txt=(data.text||"").trim();
     if(txt.length<30){t.textContent="Je n'arrive pas à bien lire cette photo. Essaie avec plus de lumière, la lettre bien à plat, ou recopie le texte.";return}
     $("letterText").value=txt;t.textContent="Lettre lue. Tu peux corriger le texte ci-dessous si besoin.";
@@ -603,21 +621,26 @@ function parseDates(t){
   return out.sort((a,b)=>a.i-b.i);
 }
 function analyse(raw){
-  const t=raw.replace(/[’`]/g,"'").replace(/\s+/g," ");
+  const t=raw.replace(/[’`]/g,"'").replace(/\s+/g," ")
+    .replace(/(\d)[oO](?=[\d\s€,.]|$)/g,"$10").replace(/(\d)[oO](\d)/g,"$10$2");
+  // variantes pour tolérer les erreurs de lecture de photo (l/I/1 confondus, 0 au lieu de o)
+  const alt=t.replace(/(\p{L})0(?=\p{L})/gu,"$1o").replace(/[l1|](?=\p{L})|(?<=\p{L})[l1|]/gu,"i");
+  const T=[t,alt];const test=re=>T.some(x=>re.test(x));const find=re=>{for(const x of T){const m=x.match(re);if(m)return m}return null};
   const res={};
   // expéditeur
-  let best=null;ORGS.forEach(([n,re])=>{const k=(t.match(new RegExp(re.source,"gi"))||[]).length;if(k&&(!best||k>best.k))best={n,k}});
+  let best=null;ORGS.forEach(([n,re])=>{const k=Math.max(...T.map(x=>(x.match(new RegExp(re.source,"gi"))||[]).length));if(k&&(!best||k>best.k))best={n,k}});
   res.org=best?.n||null;
   // cas
   let top=null;
   CASES.forEach((c,idx)=>{
-    const hits=c.m.map(re=>t.match(re)).filter(Boolean);
+    const hits=c.m.map(re=>find(re)).filter(Boolean);
     if(hits.length<(c.min||1))return;
     let s=hits.length*2;
     if(c.org&&res.org===c.org)s+=3;
     else if(c.org&&!c.free)return;
     else if(c.org&&res.org&&c.org!==res.org)s-=1;
     if(c.g==="urgent")s+=.5;
+    if(c.p)s+=c.p;
     s-=idx*.01;
     if(s>0&&(!top||s>top.s))top={c,s,words:hits.map(h=>h[0])};
   });
