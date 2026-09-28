@@ -254,6 +254,8 @@ footer a{text-underline-offset:3px}
   @keyframes thump{from{transform:rotate(-3deg) scale(1.35);opacity:.3}to{transform:rotate(-3deg) scale(1);opacity:1}}
 }
 @media (prefers-reduced-motion:reduce){.progress i,.tab{transition:none}}
+.ro{border-left:4px solid var(--tab-2);padding:4px 0 4px 14px;display:flex;flex-direction:column;gap:8px}
+.ro h3{font-size:1.05rem;margin-top:6px}
 </style>
 </head>
 <body>
@@ -565,6 +567,52 @@ const SCAM=[
  [/code (de )?(confirmation|v[ée]rification) re[çc]u par sms|mot de passe|coordonn[ée]es bancaires|num[ée]ro de carte/i,"on te demande un code, un mot de passe ou ta carte bancaire"]
 ];
 
+/* ===== Explications en roumain (traduites à l'avance, sans IA) ===== */
+const RO_G={rassurant:"Nu este grav",a_traiter:"De rezolvat",urgent:"Urgent"};
+const RO_UI={listen:"🔊 Ascultă în română",show:"Vezi în română",hide:"Ascunde româna",todo:"Ce trebuie să faci",help:"Cine te poate ajuta gratuit",before:"De făcut înainte de",amount:"Suma",novoice:"Telefonul nu are voce în română. Poți citi textul de mai jos.",note:"Traducere pregătită dinainte. Numele instituțiilor rămân în franceză, așa cum apar pe scrisoare."};
+const RO={
+"caf-indu":{t:"CAF: sumă primită în plus (indu)",r:"CAF crede că ți-a plătit prea mulți bani și vrea să îi recupereze, de obicei scăzând din ajutoarele următoare.",f:["Verifică perioada și suma: corespund unei schimbări reale (loc de muncă, mutare, viață în cuplu)?","Nu ești de acord? Scrie la Comisia de recurs amiabil (Commission de recours amiable) a CAF în termen de 2 luni.","Ești de acord, dar nu poți plăti? Cere o anulare a datoriei (remise de dette) sau o eșalonare, pe caf.fr sau prin poștă."],h:"Ghișeul CAF, France Services, CCAS (serviciul social al primăriei), asistenta socială."},
+"caf-pieces":{t:"CAF: cerere de documente",r:"CAF are nevoie de unul sau mai multe documente ca să analizeze sau să continue drepturile tale. Fără răspuns, ajutoarele pot fi suspendate.",f:["Găsește lista documentelor cerute și data limită.","Trimite-le din contul tău de pe caf.fr (Mon compte > Envoyer un document) sau prin poștă.","Păstrează o copie a ceea ce trimiți."],h:"Ghișeul CAF, France Services."},
+"caf-controle":{t:"CAF: control al situației tale",r:"CAF verifică dacă informațiile tale sunt la zi. Este ceva obișnuit și nu înseamnă că ai greșit.",f:["Răspunde în termenul cerut: chestionar de completat sau întâlnire.","Pregătește dovezile: venituri, contract de închiriere, situația familială.","Dacă un controlor vine la tine acasă, poți cere să îi vezi legitimația."],h:"Ghișeul CAF, France Services, asistenta socială."},
+"caf-suspension":{t:"CAF: suspendarea sau oprirea drepturilor",r:"CAF oprește sau suspendă plata unui ajutor.",f:["Uită-te la motivul scris: de multe ori lipsește un document sau o declarație.","Trimite cât mai repede ce lipsește, pe caf.fr.","Dacă nu ești de acord, scrie la Comisia de recurs amiabil în termen de 2 luni."],h:"Ghișeul CAF, France Services, CCAS."},
+"impots-avis":{t:"Impozite: aviz de impozit pe venit",r:"Este rezumatul declarației tale de venit. Spune dacă trebuie să plătești, dacă primești bani înapoi sau dacă nu ai nimic de plătit. Servește și ca dovadă pentru multe ajutoare.",f:["Uită-te la rândul « Reste à payer » (de plătit) sau « Montant remboursé » (suma rambursată).","Păstrează-l cu grijă: îți va fi cerut pentru o locuință socială, o bursă, cantina școlii…","O greșeală? Corecteaz-o din mesageria de pe impots.gouv.fr (de obicei până la 31 decembrie al celui de-al doilea an)."],h:"Centrul de finanțe publice (Centre des finances publiques), France Services."},
+"impots-relance":{t:"Impozite: reamintire, majorare sau somație",r:"O sumă de impozit nu a fost plătită la timp. Se poate adăuga o majorare (de multe ori 10 %).",f:["Verifică suma și impozitul respectiv (pe venit, pe proprietate…).","Dacă nu poți plăti tot, cere un termen de plată prin mesageria de pe impots.gouv.fr.","Dacă ai mari dificultăți, poți cere anularea majorării (remise gracieuse)."],h:"Centrul de finanțe publice, France Services, Point-justice (consiliere juridică gratuită)."},
+"cpam-pieces":{t:"Asigurarea de sănătate: cerere de documente sau sfârșit de drepturi",r:"Asigurarea de sănătate (Sécurité sociale) are nevoie de un document sau te anunță că unele drepturi (de exemplu Complémentaire santé solidaire) se vor opri.",f:["Trimite documentul cerut din contul tău ameli.fr (Messagerie).","Pentru Complémentaire santé solidaire, cere reînnoirea pe ameli.fr înainte de data indicată."],h:"Ghișeul CPAM, France Services, CCAS."},
+"ft-convocation":{t:"France Travail: convocare",r:"France Travail îți dă o programare. Dacă nu vii fără să anunți, alocațiile pot fi reduse sau suspendate.",f:["Notează data, ora și locul.","Dacă nu poți veni, anunță ÎNAINTE, din contul tău francetravail.fr, cu o dovadă dacă se poate."],h:"Consilierul tău France Travail, Mission locale (sub 26 de ani), France Services."},
+"ft-sanction":{t:"France Travail: avertisment, radiere sau suspendare",r:"France Travail are în vedere sau decide o sancțiune: reducerea sau suspendarea alocațiilor, sau radierea de pe listă.",f:["Dacă este un avertisment înainte de sancțiune: răspunde repede în scris, explicând situația, în termenul indicat.","Dacă decizia este luată: poți face contestație la agenția ta, de obicei în 2 luni.","Dacă ai fost radiat(ă), reînscrie-te cât mai repede."],h:"Consilierul tău, mediatorul France Travail, France Services, un sindicat sau o asociație a șomerilor."},
+"ft-tropercu":{t:"France Travail: alocații primite în plus",r:"France Travail crede că ți-a plătit prea multe alocații și cere să le dai înapoi.",f:["Verifică perioada și motivul (ai reînceput munca, ai uitat o declarație…).","Nu ești de acord: fă contestație la agenția ta.","Ești de acord, dar nu ai bani: cere o eșalonare sau o anulare."],h:"Consilierul tău, mediatorul France Travail, France Services."},
+"loyer-commandement":{t:"Locuință: somație de plată a chiriei",r:"Proprietarul îți cere oficial chiriile neplătite. Dacă nu faci nimic în termenul scris (de multe ori 6 săptămâni), poate cere judecătorului rezilierea contractului.",f:["Nu ignora această scrisoare: termenul este scurt.","Contactează imediat ADIL din departamentul tău (consiliere gratuită despre locuință).","Cere un ajutor de la Fondul de solidaritate pentru locuință (FSL), la departament sau la CCAS.","Propune în scris proprietarului un plan de plată."],h:"ADIL, CCAS, asistenta socială, Point-justice."},
+"expulsion":{t:"Locuință: citație sau procedură de evacuare",r:"A început o procedură în justiție ca să fii obligat(ă) să părăsești locuința. Încă poți acționa.",f:["Mergi la ședința de judecată dacă ești chemat(ă): judecătorul poate acorda termene.","Cere ajutor juridic (aide juridictionnelle) ca să ai un avocat gratuit sau aproape gratuit.","Contactează repede ADIL și primăria (CCAS).","Bine de știut: în perioada de iarnă (1 noiembrie – 31 martie), evacuările sunt în principiu suspendate."],h:"ADIL, Point-justice, CCAS, Fondation pour le logement des défavorisés."},
+"mise-en-demeure":{t:"Datorie: somație de plată",r:"Cineva (o firmă, o instituție de credit, o firmă de recuperare) îți cere oficial să plătești o datorie înainte de a merge mai departe.",f:["Verifică dacă datoria este reală și suma corectă. Cere detaliile în scris.","O firmă de recuperare nu îți poate lua bunurile fără o decizie a instanței.","Propune în scris o eșalonare realistă.","Mai multe datorii în același timp? Gândește-te la un dosar de supraîndatorare la Banque de France (gratuit)."],h:"Point-justice, asociație de consumatori, CCAS, Banque de France (supraîndatorare)."},
+"injonction":{t:"Datorie: ordonanță de plată",r:"Un judecător a hotărât că trebuie să plătești o datorie, la cererea unui creditor. Te poți opune dacă nu ești de acord.",f:["Uită-te la data la care executorul (commissaire de justice) ți-a dat acest document.","Ca să contești, fă opoziție la tribunalul indicat, de obicei în luna care urmează.","După acest termen, decizia poate fi executată (poprire posibilă)."],h:"Point-justice, avocat (ajutor juridic posibil), asociație de consumatori."},
+"saisie":{t:"Datorie: poprire pe salariu sau pe cont",r:"O sumă va fi (sau a fost) luată direct din salariul tău sau din contul bancar ca să plătească o datorie.",f:["Banca trebuie să îți lase un minim în cont (« solde bancaire insaisissable », cât RSA pentru o persoană singură). Cere-i-l.","Contactează executorul sau instituția ca să propui o eșalonare.","Dacă contești, poți sesiza judecătorul de executare în termenul indicat (de multe ori 1 lună)."],h:"Point-justice, avocat (ajutor juridic), CCAS, Banque de France (supraîndatorare)."},
+"pref-recepisse":{t:"Prefectura: recipisă sau adeverință",r:"Este dovada că cererea ta de permis de ședere este în curs. De multe ori îți permite să rămâi în Franța (și uneori să lucrezi) cât timp este analizată.",f:["Verifică data până la care este valabilă.","Poart-o mereu la tine, împreună cu pașaportul.","Înainte de data de expirare, cere o reînnoire dacă încă nu ai răspuns."],h:"La Cimade, asociații de ajutor pentru străini, France Services."},
+"pref-oqtf":{t:"Prefectura: refuz de permis sau obligația de a părăsi teritoriul (OQTF)",r:"Prefectura îți refuză permisul de ședere și îți poate cere să părăsești Franța. Poți face contestație, dar termenele sunt foarte scurte: de multe ori 30 de zile, uneori 15 zile sau chiar 48 de ore.",f:["Uită-te IMEDIAT la termenul de contestație scris pe decizie.","Contactează imediat o asociație specializată sau un avocat.","Păstrează toate dovezile prezenței și integrării tale în Franța (fluturași de salariu, adeverințe, facturi)."],h:"La Cimade, asociații de ajutor pentru străini, Point-justice, avocat (ajutor juridic posibil)."},
+"energie":{t:"Energie: factură neplătită sau risc de întrerupere",r:"Furnizorul de electricitate sau de gaz îți cere o factură întârziată și poate reduce sau opri furnizarea.",f:["Sună furnizorul și cere o eșalonare.","Folosește cecul de energie (chèque énergie) dacă ai unul.","Cere un ajutor de la Fondul de solidaritate pentru locuință (FSL), la CCAS.","În perioada de iarnă (1 noiembrie – 31 martie), întreruperile sunt în principiu interzise (puterea poate fi redusă)."],h:"CCAS, asistenta socială, mediatorul național al energiei."},
+"amende":{t:"Amendă: aviz de contravenție",r:"Ai primit o amendă (de multe ori pentru viteză sau parcare). Suma scade dacă plătești repede și crește dacă aștepți prea mult.",f:["Plata: pe amendes.gouv.fr, prin telefon sau cu timbru. Dacă plătești în 15 zile, suma este de multe ori mai mică.","Nu tu erai la volan? Indică șoferul sau contestă pe antai.gouv.fr, de obicei în 45 de zile.","Ferește-te de SMS-urile care cer plata unei amenzi printr-un link: de multe ori sunt înșelătorii. Singurul site oficial este amendes.gouv.fr."],h:"France Services, Point-justice."},
+"amende-majoree":{t:"Amendă: amendă forfetară majorată",r:"O amendă nu a fost plătită sau contestată la timp: suma a crescut.",f:["Dacă o plătești, fă-o repede ca să eviți popririle.","Dacă nu ai primit niciodată primul aviz sau dacă contești, fă o reclamație, de obicei în 3 luni (pe antai.gouv.fr).","Dacă nu poți plăti dintr-odată, cere un termen de la Trésor public."],h:"France Services, Point-justice."}
+};
+/* activé seulement avec le lien ?langue=ro (mémorisé sur l'appareil) ; ?langue=fr pour désactiver */
+const RO_ON=(()=>{try{const q=new URLSearchParams(location.search).get("langue");if(q==="ro")localStorage.setItem("cdp-langue","ro");if(q==="fr")localStorage.removeItem("cdp-langue");return localStorage.getItem("cdp-langue")==="ro"}catch{return new URLSearchParams(location.search).get("langue")==="ro"}})();
+function speakRo(text){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="ro-RO";u.rate=.9;const v=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.toLowerCase().startsWith("ro"));if(v)u.voice=v;speechSynthesis.speak(u)}catch{}}
+function hasRoVoice(){try{const v=speechSynthesis.getVoices();return !v.length||v.some(x=>x.lang&&x.lang.toLowerCase().startsWith("ro"))}catch{return false}}
+function blocRo(c,a){
+  if(!RO_ON)return null;const tr=RO[c.id];if(!tr)return null;
+  const parts=[RO_G[c.g],tr.t,tr.r,a&&a.deadline?RO_UI.before+" "+fmtDate(a.deadline):"",...tr.f,RO_UI.help+": "+tr.h].filter(Boolean);
+  const box=el("div",{cls:"ro",lang:"ro"},[
+    el("p",{cls:"kicker",text:RO_G[c.g]+" · "+tr.t}),el("p",{text:tr.r}),
+    a&&a.deadline?el("p",{},[el("b",{text:RO_UI.before+" : "}),fmtDate(a.deadline)]):null,
+    a&&a.amounts&&a.amounts.length?el("p",{},[el("b",{text:RO_UI.amount+" : "}),a.amounts.slice(0,4).join(" · ")]):null,
+    el("h3",{text:RO_UI.todo}),el("ol",{cls:"todo"},tr.f.map(s=>el("li",{},el("span",{text:s})))),
+    el("h3",{text:RO_UI.help}),el("p",{text:tr.h}),
+    el("p",{cls:"warnline",text:RO_UI.note})].filter(Boolean));
+  const kids=[el("div",{cls:"row"}),box];
+  if(canSpeak){const b=el("button",{cls:"btn line",type:"button",text:RO_UI.listen});
+    b.onclick=()=>{if(!hasRoVoice()){b.textContent=RO_UI.novoice;return}speakRo(parts.join(". "))};
+    kids[0].append(b)}
+  return el("div",{cls:"block"},kids);
+}
+
 /* nettoyage de la photo avant lecture : agrandir, niveaux de gris, contraste */
 async function prepareImage(file){
   try{
@@ -693,6 +741,7 @@ function fiche(c,a){
     const x=el("button",{cls:"btn link",text:"Arrêter"});x.onclick=stopSpeak;
     out.push(el("div",{cls:"row"},[b,x]));
   }
+  {const ro=blocRo(c,a);if(ro)out.push(ro)}
   if(a){const pr=el("button",{cls:"btn line",text:"Imprimer ou montrer au guichet"});pr.onclick=()=>printOnly($("cResult"));out.push(el("div",{cls:"row"},pr))}
   return out;
 }
